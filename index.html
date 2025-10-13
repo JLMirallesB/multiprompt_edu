@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiprompt - Réplica</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #007bff;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        textarea {
+            width: 98%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            resize: vertical;
+            min-height: 150px;
+            font-size: 16px;
+        }
+        .chatbot-section {
+            margin-bottom: 20px;
+            border-top: 2px solid #eee;
+            padding-top: 15px;
+        }
+        .chatbot-section h3 {
+            color: #555;
+            margin-top: 0;
+        }
+        .chatbot-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+        }
+        .chatbot-item {
+            display: flex;
+            align-items: center;
+        }
+        .chatbot-item label {
+            margin-left: 8px;
+            cursor: pointer;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .message {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            border-radius: 4px;
+            text-align: center;
+            display: none; /* Oculto por defecto */
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Multiprompt - Réplica</h1>
+    <p>Envía el mismo prompt a múltiples chatbots simultáneamente.</p>
+
+    <p style="color: red; font-weight: bold;">⚠️ Recuerda permitir las ventanas emergentes (pop-ups) en tu navegador para esta página.</p>
+
+    <h2>Pega tu prompt aquí:</h2>
+    <textarea id="promptTextarea" placeholder="Escribe tu prompt..."></textarea>
+
+    <h2>Selecciona los chatbots:</h2>
+
+    <div class="chatbot-section">
+        <h3>Chatbots con Apertura Automática ✓</h3>
+        <p>El prompt se enviará automáticamente (usando parámetros de URL).</p>
+        <div class="chatbot-list">
+            <div class="chatbot-item">
+                <input type="checkbox" id="chatgpt" value="ChatGPT">
+                <label for="chatgpt">ChatGPT</label>
+            </div>
+            <div class="chatbot-item">
+                <input type="checkbox" id="copilot" value="Microsoft Copilot">
+                <label for="copilot">Microsoft Copilot</label>
+            </div>
+            <div class="chatbot-item">
+                <input type="checkbox" id="perplexity" value="Perplexity">
+                <label for="perplexity">Perplexity</label>
+            </div>
+            <div class="chatbot-item">
+                <input type="checkbox" id="lechat" value="Le Chat (Mistral AI)">
+                <label for="lechat">Le Chat (Mistral AI)</label>
+            </div>
+             <div class="chatbot-item">
+                <input type="checkbox" id="claude" value="Claude">
+                <label for="claude">Claude</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="chatbot-section">
+        <h3>Chatbots con Pegado Manual !</h3>
+        <p>Se abrirán, pero necesitarás pegar manualmente el prompt (se copiará automáticamente al portapapeles).</p>
+        <div class="chatbot-list">
+            <div class="chatbot-item">
+                <input type="checkbox" id="gemini" value="Gemini">
+                <label for="gemini">Gemini</label>
+            </div>
+            <div class="chatbot-item">
+                <input type="checkbox" id="qwen" value="Qwen">
+                <label for="qwen">Qwen</label>
+            </div>
+            <div class="chatbot-item">
+                <input type="checkbox" id="phind" value="Phind">
+                <label for="phind">Phind</label>
+            </div>
+        </div>
+    </div>
+
+    <button onclick="sendPrompts()">Enviar a chatbots seleccionados</button>
+
+    <div id="messageBox" class="message"></div>
+</div>
+
+<script>
+    const chatbots = {
+        // Chatbots con envío automático (el prompt va en la URL)
+        "chatgpt": { 
+            url: "https://chat.openai.com/?q=", 
+            auto: true 
+        },
+        "copilot": { 
+            url: "https://copilot.microsoft.com/?q=", 
+            auto: true 
+        },
+        "perplexity": { 
+            url: "https://www.perplexity.ai/search?q=", 
+            auto: true 
+        },
+        "lechat": { 
+            url: "https://chat.mistral.ai/chat?prompt=", 
+            auto: true 
+        },
+        "claude": { 
+            url: "https://claude.ai/chat?prompt=", 
+            auto: true 
+        },
+
+        // Chatbots con pegado manual (solo abre la web)
+        "gemini": { 
+            url: "https://gemini.google.com/app", 
+            auto: false 
+        },
+        "qwen": { 
+            url: "https://qianwen.tongyi.com/chat", 
+            auto: false 
+        },
+        "phind": { 
+            url: "https://www.phind.com/search", 
+            auto: false 
+        }
+        // Puedes añadir más aquí...
+    };
+
+    function displayMessage(text, isError = false) {
+        const msgBox = document.getElementById('messageBox');
+        msgBox.textContent = text;
+        msgBox.style.backgroundColor = isError ? '#f8d7da' : '#d4edda';
+        msgBox.style.color = isError ? '#721c24' : '#155724';
+        msgBox.style.borderColor = isError ? '#f5c6cb' : '#c3e6cb';
+        msgBox.style.display = 'block';
+        
+        // Ocultar el mensaje después de 5 segundos
+        setTimeout(() => {
+            msgBox.style.display = 'none';
+        }, 5000);
+    }
+
+    async function copyToClipboard(text) {
+        try {
+            await navigator.clipboard.writeText(text);
+            return true;
+        } catch (err) {
+            console.error('Error al copiar al portapapeles:', err);
+            return false;
+        }
+    }
+
+    async function sendPrompts() {
+        const prompt = document.getElementById('promptTextarea').value.trim();
+        const selectedChatbots = [];
+        
+        // 1. Validar el prompt
+        if (!prompt) {
+            displayMessage("Por favor, introduce un prompt.", true);
+            return;
+        }
+
+        // 2. Recoger los chatbots seleccionados
+        for (const [id, data] of Object.entries(chatbots)) {
+            if (document.getElementById(id).checked) {
+                selectedChatbots.push({ id, ...data });
+            }
+        }
+        
+        if (selectedChatbots.length === 0) {
+            displayMessage("Por favor, selecciona al menos un chatbot.", true);
+            return;
+        }
+
+        // 3. Copiar el prompt si hay chatbots de pegado manual
+        const needsManualPaste = selectedChatbots.some(cb => !cb.auto);
+        let copySuccess = true;
+        
+        if (needsManualPaste) {
+            copySuccess = await copyToClipboard(prompt);
+            if (copySuccess) {
+                displayMessage("¡Prompt copiado al portapapeles! Abriendo pestañas...");
+            } else {
+                displayMessage("Error: No se pudo copiar el prompt. Por favor, cópialo manualmente. Abriendo pestañas...", true);
+            }
+        } else {
+            displayMessage("Abriendo pestañas. El prompt se enviará automáticamente.");
+        }
+
+
+        // 4. Abrir las pestañas
+        selectedChatbots.forEach(cb => {
+            let finalUrl = cb.url;
+            
+            if (cb.auto) {
+                // Para los que envían automáticamente, codificamos y adjuntamos el prompt
+                finalUrl += encodeURIComponent(prompt);
+            }
+            
+            // Abrir la URL en una nueva pestaña.
+            // Es crucial que esto se haga dentro de la función del manejador de eventos del botón
+            // para evitar que los navegadores bloqueen las ventanas emergentes.
+            window.open(finalUrl, '_blank');
+        });
+    }
+</script>
+
+</body>
+</html>
