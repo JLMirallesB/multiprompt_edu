@@ -88,7 +88,6 @@
             margin: 0 auto;
         }
         
-        /* Contenedor flotante para controles */
         .controls-top-right {
             position: absolute;
             top: 15px;
@@ -98,7 +97,6 @@
             z-index: 10;
         }
 
-        /* Selectores de Idioma y Tema */
         .language-selector, .theme-selector {
             display: flex;
             background: rgba(255,255,255,0.15);
@@ -616,7 +614,7 @@
 
         <div id="manual" class="tab-content">
             <h2 style="margin-bottom: 15px;" data-lang-key="h2Manual">Escribe tu prompt aquí:</h2>
-            <textarea id="manualPromptArea" data-lang-placeholder="phManual">Escribe o pega aquí tu prompt personalizado. Ejemplo: 'Crea una pieza de análisis armónico de música del siglo XX para alumnos de 6º de Enseñanzas Profesionales de Conservatorio'</textarea>
+            <textarea id="manualPromptArea" data-lang-placeholder="phManual" placeholder="Escribe o pega aquí tu prompt personalizado. Ejemplo: 'Crea una pieza de análisis armónico de música del siglo XX para alumnos de 6º de Enseñanzas Profesionales de Conservatorio'"></textarea>
         </div>
 
         <div id="generator" class="tab-content" style="display:none;">
@@ -761,7 +759,7 @@
             phEspecialidad: "Ej: Matemáticas, Historia, Lenguaje Musical, Trompeta",
             fCostoLabel: "😓 Aspectos de tu trabajo que te cuestan o no te gustan",
             phCosto: "Ej: Corrección de exámenes, burocracia, organizar audiciones",
-            phGustoLabel: "⭐ Aspectos de tu trabajo en los que destacas o que te gustan",
+            fGustoLabel: "⭐ Aspectos de tu trabajo en los que destacas o que te gustan",
             phGusto: "Ej: Tutoría, creación de materiales interactivos, motivar estudiantes, dirección de orquesta",
             btnGenerate: "🚀 Generar Prompt",
             h2Generated: "Prompt Generado (puedes editarlo):",
@@ -811,7 +809,7 @@
             phEspecialidad: "E.g.: Mathematics, History, Musical Language, Trumpet",
             fCostoLabel: "😓 Aspects of your job that you find difficult or dislike",
             phCosto: "E.g.: Grading exams, bureaucracy, organizing auditions",
-            phGustoLabel: "⭐ Aspects of your job that you excel at or enjoy",
+            fGustoLabel: "⭐ Aspects of your job that you excel at or enjoy",
             phGusto: "E.g.: Tutoring, creation of interactive materials, motivating students, orchestra conducting",
             btnGenerate: "🚀 Generate Prompt",
             h2Generated: "Generated Prompt (you can edit it):",
@@ -861,7 +859,7 @@
             phEspecialidad: "Ex: Matemàtiques, Història, Llenguatge Musical, Trompeta",
             fCostoLabel: "😓 Aspectes de la teva feina que et costen o no t'agraden",
             phCosto: "Ex: Correcció d'exàmens, burocràcia, organitzar audicions",
-            phGustoLabel: "⭐ Aspectes de la teva feina en els que destaques o que t'agraden",
+            fGustoLabel: "⭐ Aspectes de la teva feina en els que destaques o que t'agraden",
             phGusto: "Ex: Tutoria, creació de materials interactius, motivar estudiants, direcció d'orquestra",
             btnGenerate: "🚀 Generar Prompt",
             h2Generated: "Prompt Generat (pots editar-lo):",
@@ -911,7 +909,7 @@
             phEspecialidad: "Ex: Matemáticas, Historia, Linguaxe Musical, Trompeta",
             fCostoLabel: "😓 Aspectos do teu traballo que che custan ou non che gustan",
             phCosto: "Ex: Corrección de exames, burocracia, organizar audicións",
-            phGustoLabel: "⭐ Aspectos do teu traballo nos que destacas ou che gustan",
+            fGustoLabel: "⭐ Aspectos do teu traballo nos que destacas ou che gustan",
             phGusto: "Ex: Titoría, creación de materiais interactivos, motivar estudantes, dirección de orquestra",
             btnGenerate: "🚀 Xerar Prompt",
             h2Generated: "Prompt Xerado (podes editalo):",
@@ -961,7 +959,7 @@
             phEspecialidad: "Adib.: Matematika, Historia, Musika Lengoaia, Tronpeta",
             fCostoLabel: "😓 Zure laneko kostuak edo gustatzen ez zaizkizun alderdiak",
             phCosto: "Adib.: Azterketen zuzenketa, burokrazia, entzunaldiak antolatzea",
-            phGustoLabel: "⭐ Zure laneko alderdiak non nabarmentzen zaren edo gustatzen zaizkizunak",
+            fGustoLabel: "⭐ Zure laneko alderdiak non nabarmentzen zaren edo gustatzen zaizkizunak",
             phGusto: "Adib.: Tutoretza, material interaktiboen sorkuntza, ikasleak motibatzea, orkestra zuzendaritza",
             btnGenerate: "🚀 Prompt Sortu",
             h2Generated: "Prompt Sortua (editatu dezakezu):",
@@ -992,7 +990,7 @@
         }
     };
 
-    // --- CÓDIGO JS RESTANTE ---
+    // --- CÓDIGO JS RESTANTE Y CORREGIDO ---
 
     const chatbots = {
         "chatgpt": { url: "https://chat.openai.com/?q=", auto: true },
@@ -1033,12 +1031,8 @@
         });
 
         // Actualizar mensajes por defecto en las áreas de texto (ejemplo manual)
-        if (lang !== 'es') {
-            const manualArea = document.getElementById('manualPromptArea');
-            if (manualArea.value.startsWith('Escribe o pega aquí tu prompt')) {
-                 manualArea.value = translations[lang]['phManual'];
-            }
-        }
+        const manualArea = document.getElementById('manualPromptArea');
+        manualArea.setAttribute('placeholder', translations[lang]['phManual']);
         
         updateLanguageButtons(lang);
     }
@@ -1049,14 +1043,12 @@
         });
     }
 
+    // Corregido: Uso de event listeners para los botones de idioma
     document.querySelectorAll('.lang-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             setLanguage(btn.dataset.lang);
-            displayMessage(currentLang === 'es' ? 'Idioma cambiado a Español' : 
-                           currentLang === 'en' ? 'Language changed to English' :
-                           currentLang === 'ca' ? 'Idioma canviat a Català' :
-                           currentLang === 'gl' ? 'Idioma cambiado a Galego' :
-                           currentLang === 'eu' ? 'Hizkuntza aldatu da Euskarara', false);
+            // Mensaje de confirmación de idioma (simplificado para no introducir más complejidad)
+            displayMessage(translations[currentLang]['msgAllSelected'].replace('Todos los chatbots seleccionados', `Idioma cambiado a ${btn.dataset.lang.toUpperCase()}`), false);
         });
     });
 
@@ -1083,6 +1075,7 @@
         });
     }
 
+    // Corregido: Uso de event listeners para los botones de tema
     document.querySelectorAll('.theme-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             const theme = btn.dataset.theme;
@@ -1260,6 +1253,7 @@ Formatea tu respuesta usando **encabezados de Markdown** (ej. \`##\`) para cada 
                 finalUrl += encodeURIComponent(prompt);
             }
             
+            // Abrir en una nueva pestaña
             window.open(finalUrl, '_blank');
         });
     }
@@ -1272,6 +1266,7 @@ Formatea tu respuesta usando **encabezados de Markdown** (ej. \`##\`) para cada 
         const savedLang = localStorage.getItem('lang') || 'es';
         setLanguage(savedLang);
         
+        // Mostrar la pestaña correcta al cargar
         showTab('manual');
     });
 </script>
