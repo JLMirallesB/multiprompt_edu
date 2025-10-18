@@ -614,7 +614,7 @@
 
         <div id="manual" class="tab-content">
             <h2 style="margin-bottom: 15px;" data-lang-key="h2Manual">Escribe tu prompt aquí:</h2>
-            <textarea id="manualPromptArea" data-lang-placeholder="phManual" placeholder="Escribe o pega aquí tu prompt personalizado. Ejemplo: 'Crea una pieza de análisis armónico de música del siglo XX para alumnos de 6º de Enseñanzas Profesionales de Conservatorio'"></textarea>
+            <textarea id="manualPromptArea"></textarea>
         </div>
 
         <div id="generator" class="tab-content" style="display:none;">
@@ -731,7 +731,7 @@
 
 <div class="footer">
     <p data-lang-key="footerOriginal">Herramienta original: <a href="https://bilateria.org/app/utils_IA/multiprompt.html" target="_blank">Multiprompt de Juan José de Haro</a>.</p>
-    <p data-lang-key="footerAdaptation">Adaptación (Multiprompt EDU) por <a href="http://www.jlmirall.es" target="_blank">José Luis Miralles Bono (www.jlmirall.es)</a>.</p>
+    <p data-lang-key="footerAdaptation">Adaptación (Multiprompt EDU) por <a href="http://www.jlmirall.es" target="_blank">José Luis Miralles Bono</a>.</p>
     <p data-lang-key="footerLicense">Esta obra está bajo una licencia <a href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative Commons BY-SA 4.0</a>.</p>
 </div>
 
@@ -751,7 +751,6 @@
             tabManual: "✍️ Prompt Manual",
             tabGenerator: "🎯 Generador de Prompt",
             h2Manual: "Escribe tu prompt aquí:",
-            phManual: "Escribe o pega aquí tu prompt personalizado. Ejemplo: 'Crea una pieza de análisis armónico de música del siglo XX para alumnos de 6º de Enseñanzas Profesionales de Conservatorio'",
             h2Generator: "Generador de Prompt Estructurado para IA Educativa",
             fNivelLabel: "📚 Nivel Educativo",
             phNivel: "Ej: Secundaria, 1º ESO, 6º de Enseñanzas Profesionales de Conservatorio",
@@ -785,8 +784,25 @@
             msgNoneSelected: "Todos los chatbots deseleccionados",
             msgRandomSelected: (names) => `🎲 Seleccionados aleatoriamente: ${names}`,
             footerOriginal: "Herramienta original: <a href=\"https://bilateria.org/app/utils_IA/multiprompt.html\" target=\"_blank\">Multiprompt de Juan José de Haro</a>.",
-            footerAdaptation: "Adaptación (Multiprompt EDU) por <a href=\"http://www.jlmirall.es\" target=\"_blank\">José Luis Miralles Bono (www.jlmirall.es)</a>.",
-            footerLicense: "Esta obra está bajo una licencia <a href=\"http://creativecommons.org/licenses/by-sa/4.0/\" target=\"_blank\">Creative Commons BY-SA 4.0</a>."
+            // CORRECCIÓN 3
+            footerAdaptation: "Adaptación (Multiprompt EDU) por <a href=\"http://www.jlmirall.es\" target=\"_blank\">José Luis Miralles Bono</a>.",
+            footerLicense: "Esta obra está bajo una licencia <a href=\"http://creativecommons.org/licenses/by-sa/4.0/\" target=\"_blank\">Creative Commons BY-SA 4.0</a>.",
+            // CORRECCIÓN 2: ESTRUCTURA DEL PROMPT
+            ptRoleInst: "[INSTRUCCIÓN AL CHATBOT: Actúa como un consultor de IA para docentes]",
+            ptRoleTitle: "#### 1. ROL (Identidad y Experiencia)",
+            ptRoleContent: "Actúa como un **Experto en Integración Curricular de Inteligencia Artificial (IA)** y un **Especialista en Productividad Docente**. Tu objetivo es proporcionar estrategias accionables y creativas para un profesor de la especialidad de **[SPECIALTY]** que trabaja con alumnos de **[LEVEL]**.",
+            ptTaskTitle: "#### 2. TAREA (Los Objetivos Principales)",
+            ptTaskA: "A. **Innovación en el Aula:** Crea una **lista exhaustiva y altamente creativa** (con al menos 15 puntos, sin entrar en descripciones, solo ideas) de cómo la IA puede ser utilizada directamente en la asignatura de **[SPECIALTY]** para el nivel de **[LEVEL]** para mejorar la enseñanza y el aprendizaje (ej. proyectos, evaluaciones, diferenciación).",
+            ptTaskB: "B. **Alivio de Carga:** Detalla **tres estrategias concretas** y prácticas de IA que aborden los aspectos del trabajo docente que el profesor encuentra difíciles o que le cuestan, específicamente **[COST]**. Explica exactamente cómo la IA puede aliviar esa carga (ej. herramientas o procesos específicos).",
+            ptTaskC: "C. **Potenciación de Fortalezas:** Detalla **tres estrategias concretas** de IA que permitan al profesor potenciar y maximizar sus fortalezas o aspectos que disfruta, que son **[STRENGTH]**. Describe cómo la IA actúa como un amplificador de su talento.",
+            ptContextTitle: "#### 3. CONTEXTO Y RESTRICCIONES",
+            ptContextPoint1: "* **Precisión:** Todas las sugerencias deben ser relevantes, prácticas y aplicables al contexto educativo de **[LEVEL]** y **[SPECIALTY]**.",
+            ptContextPoint2: "* **Originalidad:** Prioriza ideas que vayan más allá de la simple \"creación de cuestionarios\".",
+            ptContextPoint3: "* **Longitud:** Las secciones B y C deben tener cada una un desarrollo de un párrafo por estrategia (3 párrafos en total por sección).",
+            ptToneTitle: "#### 4. TONO",
+            ptTone: "El tono debe ser **profesional, inspirador y altamente práctico**.",
+            ptFormatTitle: "#### 5. FORMATO",
+            ptFormat: "Formatea tu respuesta usando **encabezados de Markdown** (ej. `##`) para cada una de las tres secciones (A, B y C) y **listas numeradas o de viñetas** según corresponda."
         },
         en: {
             title: "Multiprompt EDU",
@@ -801,7 +817,6 @@
             tabManual: "✍️ Manual Prompt",
             tabGenerator: "🎯 Prompt Generator",
             h2Manual: "Enter your prompt here:",
-            phManual: "Type or paste your custom prompt here. Example: 'Create a piece of harmonic analysis of 20th-century music for students in 6th year of Professional Conservatory Studies'",
             h2Generator: "Structured Prompt Generator for Educational AI",
             fNivelLabel: "📚 Educational Level",
             phNivel: "E.g.: Secondary, 1st Year ESO, 6th Year Professional Conservatory Studies",
@@ -835,8 +850,25 @@
             msgNoneSelected: "All chatbots deselected",
             msgRandomSelected: (names) => `🎲 Randomly selected: ${names}`,
             footerOriginal: "Original tool: <a href=\"https://bilateria.org/app/utils_IA/multiprompt.html\" target=\"_blank\">Multiprompt by Juan José de Haro</a>.",
-            footerAdaptation: "Adaptation (Multiprompt EDU) by <a href=\"http://www.jlmirall.es\" target=\"_blank\">José Luis Miralles Bono (www.jlmirall.es)</a>.",
-            footerLicense: "This work is licensed under a <a href=\"http://creativecommons.org/licenses/by-sa/4.0/\" target=\"_blank\">Creative Commons BY-SA 4.0 License</a>."
+            // CORRECCIÓN 3
+            footerAdaptation: "Adaptation (Multiprompt EDU) by <a href=\"http://www.jlmirall.es\" target=\"_blank\">José Luis Miralles Bono</a>.",
+            footerLicense: "This work is licensed under a <a href=\"http://creativecommons.org/licenses/by-sa/4.0/\" target=\"_blank\">Creative Commons BY-SA 4.0 License</a>.",
+            // CORRECCIÓN 2: ESTRUCTURA DEL PROMPT
+            ptRoleInst: "[INSTRUCTION TO CHATBOT: Act as an AI consultant for teachers]",
+            ptRoleTitle: "#### 1. ROLE (Identity and Experience)",
+            ptRoleContent: "Act as an **Expert in Artificial Intelligence (AI) Curricular Integration** and a **Specialist in Teaching Productivity**. Your goal is to provide actionable and creative strategies for a teacher specialized in **[SPECIALTY]** working with students from **[LEVEL]**.",
+            ptTaskTitle: "#### 2. TASK (The Main Objectives)",
+            ptTaskA: "A. **Classroom Innovation:** Create an **exhaustive and highly creative list** (with at least 15 points, no detailed descriptions, only ideas) of how AI can be used directly in the **[SPECIALTY]** subject for the **[LEVEL]** to improve teaching and learning (e.g., projects, assessments, differentiation).",
+            ptTaskB: "B. **Workload Relief:** Detail **three concrete and practical AI strategies** that address the aspects of teaching work the teacher finds difficult or dislikes, specifically **[COST]**. Explain exactly how AI can alleviate this burden (e.g., specific tools or processes).",
+            ptTaskC: "C. **Strength Enhancement:** Detail **three concrete AI strategies** that allow the teacher to enhance and maximize their strengths or aspects they enjoy, which are **[STRENGTH]**. Describe how AI acts as an amplifier of their talent.",
+            ptContextTitle: "#### 3. CONTEXT AND RESTRICTIONS",
+            ptContextPoint1: "* **Accuracy:** All suggestions must be relevant, practical, and applicable to the educational context of **[LEVEL]** and **[SPECIALTY]**.",
+            ptContextPoint2: "* **Originality:** Prioritize ideas that go beyond simple \"quiz creation\".",
+            ptContextPoint3: "* **Length:** Sections B and C must each have a one-paragraph development per strategy (3 paragraphs in total per section).",
+            ptToneTitle: "#### 4. TONE",
+            ptTone: "The tone should be **professional, inspiring, and highly practical**.",
+            ptFormatTitle: "#### 5. FORMAT",
+            ptFormat: "Format your response using **Markdown headings** (e.g., `##`) for each of the three sections (A, B, and C) and **numbered or bulleted lists** as appropriate."
         },
         ca: {
             title: "Multiprompt EDU",
@@ -851,7 +883,6 @@
             tabManual: "✍️ Prompt Manual",
             tabGenerator: "🎯 Generador de Prompt",
             h2Manual: "Escriu el teu prompt aquí:",
-            phManual: "Escriu o enganxa aquí el teu prompt personalitzat. Exemple: 'Crea una peça d'anàlisi harmònica de música del segle XX per a alumnes de 6è d'Ensenyaments Professionals de Conservatori'",
             h2Generator: "Generador de Prompt Estructurat per a IA Educativa",
             fNivelLabel: "📚 Nivell Educatiu",
             phNivel: "Ex: Secundària, 1r ESO, 6è d'Ensenyaments Professionals de Conservatori",
@@ -885,8 +916,25 @@
             msgNoneSelected: "Tots els chatbots deseleccionats",
             msgRandomSelected: (names) => `🎲 Seleccionats aleatòriament: ${names}`,
             footerOriginal: "Eina original: <a href=\"https://bilateria.org/app/utils_IA/multiprompt.html\" target=\"_blank\">Multiprompt de Juan José de Haro</a>.",
-            footerAdaptation: "Adaptació (Multiprompt EDU) per <a href=\"http://www.jlmirall.es\" target=\"_blank\">José Luis Miralles Bono (www.jlmirall.es)</a>.",
-            footerLicense: "Aquesta obra està sota una llicència <a href=\"http://creativecommons.org/licenses/by-sa/4.0/\" target=\"_blank\">Creative Commons BY-SA 4.0</a>."
+            // CORRECCIÓN 3
+            footerAdaptation: "Adaptació (Multiprompt EDU) per <a href=\"http://www.jlmirall.es\" target=\"_blank\">José Luis Miralles Bono</a>.",
+            footerLicense: "Aquesta obra està sota una llicència <a href=\"http://creativecommons.org/licenses/by-sa/4.0/\" target=\"_blank\">Creative Commons BY-SA 4.0</a>.",
+            // CORRECCIÓN 2: ESTRUCTURA DEL PROMPT
+            ptRoleInst: "[INSTRUCCIÓ AL CHATBOT: Actua com un consultor d'IA per a docents]",
+            ptRoleTitle: "#### 1. ROL (Identitat i Experiència)",
+            ptRoleContent: "Actua com un **Expert en Integració Curricular d'Intel·ligència Artificial (IA)** i un **Especialista en Productivitat Docent**. El teu objectiu és proporcionar estratègies accionables i creatives per a un professor de l'especialitat de **[SPECIALTY]** que treballa amb alumnes de **[LEVEL]**.",
+            ptTaskTitle: "#### 2. TASCA (Els Objectius Principals)",
+            ptTaskA: "A. **Innovació a l'Aula:** Crea una **llista exhaustiva i altament creativa** (amb almenys 15 punts, sense entrar en descripcions, només idees) de com la IA pot ser utilitzada directament en l'assignatura de **[SPECIALTY]** per al nivell de **[LEVEL]** per millorar l'ensenyament i l'aprenentatge (ex. projectes, avaluacions, diferenciació).",
+            ptTaskB: "B. **Alleujament de Càrrega:** Detalla **tres estratègies concretes** i pràctiques d'IA que abordin els aspectes de la feina docent que el professor troba difícils o que li costen, específicament **[COST]**. Explica exactament com la IA pot alleujar aquesta càrrega (ex. eines o processos específics).",
+            ptTaskC: "C. **Potenciació de Fortaleses:** Detalla **tres estratègies concretes** d'IA que permetin al professor potenciar i maximitzar les seves fortaleses o aspectes que gaudeix, que són **[STRENGTH]**. Descriu com la IA actua com un amplificador del seu talent.",
+            ptContextTitle: "#### 3. CONTEXT I RESTRICCIONS",
+            ptContextPoint1: "* **Precisió:** Tots els suggeriments han de ser rellevants, pràctics i aplicables al context educatiu de **[LEVEL]** i **[SPECIALTY]**.",
+            ptContextPoint2: "* **Originalitat:** Prioritza idees que vagin més enllà de la simple \"creació de qüestionaris\".",
+            ptContextPoint3: "* **Longitud:** Les seccions B i C han de tenir cadascuna un desenvolupament d'un paràgraf per estratègia (3 paràgrafs en total per secció).",
+            ptToneTitle: "#### 4. TONALITAT",
+            ptTone: "La tonalitat ha de ser **professional, inspiradora i altament pràctica**.",
+            ptFormatTitle: "#### 5. FORMAT",
+            ptFormat: "Formata la teva resposta utilitzant **encapçalaments de Markdown** (ex. `##`) per a cadascuna de les tres seccions (A, B i C) i **llistes numerades o de vinyetes** segons correspongui."
         },
         gl: {
             title: "Multiprompt EDU",
@@ -901,7 +949,6 @@
             tabManual: "✍️ Prompt Manual",
             tabGenerator: "🎯 Xerador de Prompt",
             h2Manual: "Escribe o teu prompt aquí:",
-            phManual: "Escribe ou pega aquí o teu prompt personalizado. Exemplo: 'Crea unha peza de análise harmónica de música do século XX para alumnos de 6º de Ensinanzas Profesionais de Conservatorio'",
             h2Generator: "Xerador de Prompt Estruturado para IA Educativa",
             fNivelLabel: "📚 Nivel Educativo",
             phNivel: "Ex: Secundaria, 1º ESO, 6º de Ensinanzas Profesionais de Conservatorio",
@@ -935,8 +982,25 @@
             msgNoneSelected: "Todos os chatbots deseleccionados",
             msgRandomSelected: (names) => `🎲 Seleccionados aleatoriamente: ${names}`,
             footerOriginal: "Ferramenta orixinal: <a href=\"https://bilateria.org/app/utils_IA/multiprompt.html\" target=\"_blank\">Multiprompt de Juan José de Haro</a>.",
-            footerAdaptation: "Adaptación (Multiprompt EDU) por <a href=\"http://www.jlmirall.es\" target=\"_blank\">José Luis Miralles Bono (www.jlmirall.es)</a>.",
-            footerLicense: "Esta obra está baixo unha licenza <a href=\"http://creativecommons.org/licenses/by-sa/4.0/\" target=\"_blank\">Creative Commons BY-SA 4.0</a>."
+            // CORRECCIÓN 3
+            footerAdaptation: "Adaptación (Multiprompt EDU) por <a href=\"http://www.jlmirall.es\" target=\"_blank\">José Luis Miralles Bono</a>.",
+            footerLicense: "Esta obra está baixo unha licenza <a href=\"http://creativecommons.org/licenses/by-sa/4.0/\" target=\"_blank\">Creative Commons BY-SA 4.0</a>.",
+            // CORRECCIÓN 2: ESTRUCTURA DEL PROMPT
+            ptRoleInst: "[INSTRUCIÓN AO CHATBOT: Actúa como un consultor de IA para docentes]",
+            ptRoleTitle: "#### 1. ROL (Identidade e Experiencia)",
+            ptRoleContent: "Actúa como un **Experto en Integración Curricular de Intelixencia Artificial (IA)** e un **Especialista en Produtividade Docente**. O teu obxectivo é proporcionar estratexias accionables e creativas para un profesor da especialidade de **[SPECIALTY]** que traballa con alumnos de **[LEVEL]**.",
+            ptTaskTitle: "#### 2. TAREFA (Os Obxectivos Principais)",
+            ptTaskA: "A. **Innovación na Aula:** Crea unha **lista exhaustiva e altamente creativa** (con polo menos 15 puntos, sen entrar en descricións, só ideas) de como a IA pode ser utilizada directamente na materia de **[SPECIALTY]** para o nivel de **[LEVEL]** para mellorar o ensino e a aprendizaxe (ex. proxectos, avaliacións, diferenciación).",
+            ptTaskB: "B. **Alivio de Carga:** Detalla **tres estratexias concretas** e prácticas de IA que aborden os aspectos do traballo docente que o profesor atopa difíciles ou que lle custan, especificamente **[COST]**. Explica exactamente como a IA pode aliviar esa carga (ex. ferramentas ou procesos específicos).",
+            ptTaskC: "C. **Potenciación de Fortalezas:** Detalla **tres estratexias concretas** de IA que permitan ao profesor potenciar e maximizar as súas fortalezas ou aspectos que goza, que son **[STRENGTH]**. Describe como a IA actúa como un amplificador do seu talento.",
+            ptContextTitle: "#### 3. CONTEXTO E RESTRICIÓNS",
+            ptContextPoint1: "* **Precisión:** Todas as suxestións deben ser relevantes, prácticas e aplicables ao contexto educativo de **[LEVEL]** e **[SPECIALTY]**.",
+            ptContextPoint2: "* **Orixinalidade:** Prioriza ideas que vaian máis aló da simple \"creación de cuestionarios\".",
+            ptContextPoint3: "* **Lonxitude:** As seccións B e C deben ter cada unha un desenvolvemento dun parágrafo por estratexia (3 parágrafos en total por sección).",
+            ptToneTitle: "#### 4. TONO",
+            ptTone: "O tono debe ser **profesional, inspirador e altamente práctico**.",
+            ptFormatTitle: "#### 5. FORMATO",
+            ptFormat: "Formatea a túa resposta usando **encabezados de Markdown** (ex. `##`) para cada unha das tres seccións (A, B e C) e **listas numeradas ou de viñetas** segundo corresponda."
         },
         eu: {
             title: "Multiprompt EDU",
@@ -951,7 +1015,6 @@
             tabManual: "✍️ Eskuzko Prompt",
             tabGenerator: "🎯 Prompt Sortzailea",
             h2Manual: "Idatzi zure prompta hemen:",
-            phManual: "Idatzi edo itsatsi hemen zure prompt pertsonalizatua. Adibidea: 'Sortu XX. mendeko musika azterketa harmonikoko pieza bat Kontserbatorioko Irakaskuntza Profesionaletako 6. mailako ikasleentzat'",
             h2Generator: "AI hezkuntzarako Prompt Egituratuaren Sortzailea",
             fNivelLabel: "📚 Hezkuntza Maila",
             phNivel: "Adib.: Bigarren Hezkuntza, 1. mailako DBH, Kontserbatorioko Irakaskuntza Profesionaletako 6. maila",
@@ -985,8 +1048,25 @@
             msgNoneSelected: "Txatbot guztiak desautatuta",
             msgRandomSelected: (names) => `🎲 Ausaz hautatutakoak: ${names}`,
             footerOriginal: "Jatorrizko tresna: <a href=\"https://bilateria.org/app/utils_IA/multiprompt.html\" target=\"_blank\">Juan José de Haro-ren Multiprompt</a>.",
-            footerAdaptation: "Egokitzapena (Multiprompt EDU) <a href=\"http://www.jlmirall.es\" target=\"_blank\">José Luis Miralles Bono-k (www.jlmirall.es)</a>.",
-            footerLicense: "Lan honek <a href=\"http://creativecommons.org/licenses/by-sa/4.0/\" target=\"_blank\">Creative Commons BY-SA 4.0 lizentzia</a> baten pean dago."
+            // CORRECCIÓN 3
+            footerAdaptation: "Egokitzapena (Multiprompt EDU) <a href=\"http://www.jlmirall.es\" target=\"_blank\">José Luis Miralles Bono</a>.",
+            footerLicense: "Lan honek <a href=\"http://creativecommons.org/licenses/by-sa/4.0/\" target=\"_blank\">Creative Commons BY-SA 4.0 lizentzia</a> baten pean dago.",
+            // CORRECCIÓN 2: ESTRUCTURA DEL PROMPT
+            ptRoleInst: "[CHATBOTERAKO INSTRUKZIOA: Irakasleentzako AI aholkulari gisa jardun]",
+            ptRoleTitle: "#### 1. ROLA (Identitatea eta Esperientzia)",
+            ptRoleContent: "Jardun **Adimen Artifizialaren (IA) Integrazio Kurrikularreko Aditu** eta **Irakasleen Produktibitateko Espezialista** gisa. Zure helburua da **[SPECIALTY]** espezialitateko irakasle batentzat estrategia egingarri eta sortzaileak eskaintzea, **[LEVEL]** mailako ikasleekin lan egiten duena.",
+            ptTaskTitle: "#### 2. ZEREGINA (Helburu Nagusiak)",
+            ptTaskA: "A. **Berrikuntza Ikasgelan:** Sortu **zerrenda zehatz eta oso sortzailea** (gutxienez 15 punturekin, deskribapenetan sartu gabe, ideia hutsak) AI nola erabil daitekeen zuzenean **[SPECIALTY]** irakasgaian **[LEVEL]** mailarako, irakaskuntza eta ikaskuntza hobetzeko (adib.: proiektuak, ebaluazioak, bereizketa).",
+            ptTaskB: "B. **Karga Arintzea:** Zehaztu **hiru estrategia zehatz eta praktiko** AIkoak, irakasleak zailak edo gustuko ez dituen irakasle-laneko alderdiei aurre egiten dietenak, zehazki **[COST]**. Azaldu zehazki nola AIk karga hori arindu dezakeen (adib.: tresna edo prozesu espezifikoak).",
+            ptTaskC: "C. **Indarguneak Sustatzea:** Zehaztu **hiru estrategia zehatz** AIkoak, irakasleari bere indarguneak edo gozatzen dituen alderdiak maximizatzen eta sustatzen uzten diotenak, hau da, **[STRENGTH]**. Deskribatu nola AIk bere talentuaren anplifikatzaile gisa jarduten duen.",
+            ptContextTitle: "#### 3. TESTUINGURUA ETA MUGAK",
+            ptContextPoint1: "* **Zehaztasuna:** Iradokizun guztiak garrantzitsuak, praktikoak eta aplikagarriak izan behar dute **[LEVEL]** eta **[SPECIALTY]** hezkuntza-testuinguruan.",
+            ptContextPoint2: "* **Originaltasuna:** Lehenetsi \"galdetegiak sortzea\" soiletik haratago doazen ideiak.",
+            ptContextPoint3: "* **Luzera:** B eta C atalek estrategia bakoitzeko paragrafo bateko garapena izan behar dute (3 paragrafo guztira atal bakoitzeko).",
+            ptToneTitle: "#### 4. TONUA",
+            ptTone: "Tonuak **profesionala, inspiratzailea eta oso praktikoa** izan behar du.",
+            ptFormatTitle: "#### 5. FORMATUA",
+            ptFormat: "Formateatu zure erantzuna **Markdown goiburuak** (adib.: `##`) erabiliz hiru ataletarako (A, B eta C) eta **zerrenda zenbatuak edo buletak** egokienak badira."
         }
     };
 
@@ -1030,9 +1110,7 @@
             }
         });
 
-        // Actualizar mensajes por defecto en las áreas de texto (ejemplo manual)
-        const manualArea = document.getElementById('manualPromptArea');
-        manualArea.setAttribute('placeholder', translations[lang]['phManual']);
+        // CORRECCIÓN 1: Eliminada la actualización del placeholder manual
         
         updateLanguageButtons(lang);
     }
@@ -1146,6 +1224,7 @@
     }
 
     // --- FUNCIONES DE GENERADOR (PROMPT AVANZADO) ---
+    // CORRECCIÓN 2: Lógica de generación de prompt traducida
     function generatePrompt() {
         const nivel = document.getElementById('fNivel').value.trim();
         const especialidad = document.getElementById('fEspecialidad').value.trim();
@@ -1157,32 +1236,51 @@
             return;
         }
 
-        // Estructura del Prompt Mejorada (ROLE, TASK, CONTEXT...)
+        const t = translations[currentLang];
+
+        // Construcción del prompt usando las plantillas traducidas
+        const roleContent = t.ptRoleContent
+            .replace('[SPECIALTY]', especialidad)
+            .replace('[LEVEL]', nivel);
+            
+        const taskA = t.ptTaskA
+            .replace('[SPECIALTY]', especialidad)
+            .replace('[LEVEL]', nivel);
+            
+        const taskB = t.ptTaskB
+            .replace('[COST]', costo);
+
+        const taskC = t.ptTaskC
+            .replace('[STRENGTH]', gusto);
+
+        const contextPoint1 = t.ptContextPoint1
+            .replace('[LEVEL]', nivel)
+            .replace('[SPECIALTY]', especialidad);
+
         const promptTemplate = `
-[INSTRUCCIÓN AL CHATBOT: Actúa como un consultor de IA para docentes]
+${t.ptRoleInst}
 
-#### 1. ROL (Identidad y Experiencia)
-Actúa como un **Experto en Integración Curricular de Inteligencia Artificial (IA)** y un **Especialista en Productividad Docente**. Tu objetivo es proporcionar estrategias accionables y creativas para un profesor de la especialidad de **${especialidad}** que trabaja con alumnos de **${nivel}**.
+${t.ptRoleTitle}
+${roleContent}
 
-#### 2. TAREA (Los Objetivos Principales)
-Tu respuesta debe estar dividida en tres secciones claras y separadas, abordando los siguientes puntos:
+${t.ptTaskTitle}
+${taskA}
 
-A. **Innovación en el Aula:** Crea una **lista exhaustiva y altamente creativa** (con al menos 15 puntos, sin entrar en descripciones, solo ideas) de cómo la IA puede ser utilizada directamente en la asignatura de **${especialidad}** para el nivel de **${nivel}** para mejorar la enseñanza y el aprendizaje (ej. proyectos, evaluaciones, diferenciación).
+${taskB}
 
-B. **Alivio de Carga:** Detalla **tres estrategias concretas** y prácticas de IA que aborden los aspectos del trabajo docente que el profesor encuentra difíciles o que le cuestan, específicamente **${costo}**. Explica exactamente cómo la IA puede aliviar esa carga (ej. herramientas o procesos específicos).
+${taskC}
 
-C. **Potenciación de Fortalezas:** Detalla **tres estrategias concretas** de IA que permitan al profesor potenciar y maximizar sus fortalezas o aspectos que disfruta, que son **${gusto}**. Describe cómo la IA actúa como un amplificador de su talento.
+${t.ptContextTitle}
+${contextPoint1}
+${t.ptContextPoint2}
+${t.ptContextPoint3}
 
-#### 3. CONTEXTO Y RESTRICCIONES
-* **Precisión:** Todas las sugerencias deben ser relevantes, prácticas y aplicables al contexto educativo de **${nivel}** y **${especialidad}**.
-* **Originalidad:** Prioriza ideas que vayan más allá de la simple "creación de cuestionarios".
-* **Longitud:** Las secciones B y C deben tener cada una un desarrollo de un párrafo por estrategia (3 párrafos en total por sección).
+${t.ptToneTitle}
+${t.ptTone}
 
-#### 4. TONO
-El tono debe ser **profesional, inspirador y altamente práctico**.
-
-#### 5. FORMATO
-Formatea tu respuesta usando **encabezados de Markdown** (ej. \`##\`) para cada una de las tres secciones (A, B y C) y **listas numeradas o de viñetas** según corresponda.`.trim();
+${t.ptFormatTitle}
+${t.ptFormat}
+`.trim();
         
         document.getElementById('generatedPromptArea').value = promptTemplate;
         displayMessage(translations[currentLang]['msgGenerated']);
