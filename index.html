@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Multiprompt - Réplica con Fix iOS</title>
+    <title>Multiprompt - Réplica</title>
     <style>
         body {
             font-family: sans-serif;
@@ -86,11 +86,10 @@
 <body>
 
 <div class="container">
-    <h1>Multiprompt - Réplica con Fix iOS</h1>
+    <h1>Multiprompt - Réplica</h1>
     <p>Envía el mismo prompt a múltiples chatbots simultáneamente.</p>
 
     <p style="color: red; font-weight: bold;">⚠️ Recuerda permitir las ventanas emergentes (pop-ups) en tu navegador para esta página.</p>
-    <p style="color: blue;">✨ Se ha implementado un truco de redirección para intentar que las URLs se abran en el navegador en lugar de la aplicación nativa (útil en iOS/Android).</p>
 
     <h2>Pega tu prompt aquí:</h2>
     <textarea id="promptTextarea" placeholder="Escribe tu prompt..."></textarea>
@@ -150,43 +149,42 @@
 
 <script>
     const chatbots = {
-        // En lugar de 'url', usamos 'base_url'
-        
         // Chatbots con envío automático (el prompt va en la URL)
         "chatgpt": { 
-            base_url: "https://chat.openai.com/?q=", 
+            url: "https://chat.openai.com/?q=", 
             auto: true 
         },
         "copilot": { 
-            base_url: "https://copilot.microsoft.com/?q=", 
+            url: "https://copilot.microsoft.com/?q=", 
             auto: true 
         },
         "perplexity": { 
-            base_url: "https://www.perplexity.ai/search?q=", 
+            url: "https://www.perplexity.ai/search?q=", 
             auto: true 
         },
         "lechat": { 
-            base_url: "https://chat.mistral.ai/chat?prompt=", 
+            url: "https://chat.mistral.ai/chat?prompt=", 
             auto: true 
         },
         "claude": { 
-            base_url: "https://claude.ai/chat?prompt=", 
+            url: "https://claude.ai/chat?prompt=", 
             auto: true 
         },
 
         // Chatbots con pegado manual (solo abre la web)
         "gemini": { 
-            base_url: "https://gemini.google.com/app", 
+            url: "https://gemini.google.com/app", 
             auto: false 
         },
         "qwen": { 
-            base_url: "https://qianwen.tongyi.com/chat", 
+            url: "https://qianwen.tongyi.com/chat", 
             auto: false 
         },
         "phind": { 
-            base_url: "https://www.phind.com/search", 
+            url: "https://www.phind.com/search", 
             auto: false 
         }
+        // Puedes añadir más aquí...
     };
 
     function displayMessage(text, isError = false) {
@@ -216,8 +214,7 @@
     async function sendPrompts() {
         const prompt = document.getElementById('promptTextarea').value.trim();
         const selectedChatbots = [];
-        const GOOGLE_REDIRECT = "https://www.google.com/url?q="; // Redirección para el Fix de iOS/Apps
-
+        
         // 1. Validar el prompt
         if (!prompt) {
             displayMessage("Por favor, introduce un prompt.", true);
@@ -252,22 +249,18 @@
         }
 
 
-        // 4. Abrir las pestañas con la mejora de redirección
+        // 4. Abrir las pestañas
         selectedChatbots.forEach(cb => {
-            let finalUrl;
+            let finalUrl = cb.url;
             
             if (cb.auto) {
-                // Paso A: Crear la URL del chatbot con el prompt
-                let urlWithPrompt = cb.base_url + encodeURIComponent(prompt);
-                
-                // Paso B: Envolver esta URL en el redireccionador de Google (doble codificación)
-                finalUrl = GOOGLE_REDIRECT + encodeURIComponent(urlWithPrompt);
-            } else {
-                // Para pegado manual: Envolver la URL base en el redireccionador
-                finalUrl = GOOGLE_REDIRECT + encodeURIComponent(cb.base_url);
+                // Para los que envían automáticamente, codificamos y adjuntamos el prompt
+                finalUrl += encodeURIComponent(prompt);
             }
             
-            // Abrir la URL en una nueva pestaña
+            // Abrir la URL en una nueva pestaña.
+            // Es crucial que esto se haga dentro de la función del manejador de eventos del botón
+            // para evitar que los navegadores bloqueen las ventanas emergentes.
             window.open(finalUrl, '_blank');
         });
     }
