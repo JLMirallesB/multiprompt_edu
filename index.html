@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Multiprompt EDU</title>
+    <title data-lang-key="title">Multiprompt EDU</title>
     <style>
         :root {
             --bg-primary: #f8f9fa;
@@ -53,7 +53,7 @@
             line-height: 1.6;
             transition: background-color 0.3s ease, color 0.3s ease;
             padding: 20px;
-            padding-bottom: 120px; /* Espacio para el footer fijo */
+            padding-bottom: 120px;
         }
 
         .container {
@@ -87,37 +87,45 @@
             max-width: 800px;
             margin: 0 auto;
         }
-
-        .theme-selector {
+        
+        /* Contenedor flotante para controles */
+        .controls-top-right {
             position: absolute;
-            top: 20px;
-            right: 20px;
+            top: 15px;
+            right: 15px;
             display: flex;
-            gap: 8px;
+            gap: 10px;
+            z-index: 10;
+        }
+
+        /* Selectores de Idioma y Tema */
+        .language-selector, .theme-selector {
+            display: flex;
             background: rgba(255,255,255,0.15);
-            padding: 8px;
+            padding: 5px;
             border-radius: 12px;
             backdrop-filter: blur(10px);
         }
 
-        .theme-btn {
+        .theme-btn, .lang-btn {
             background: transparent;
-            border: 2px solid rgba(255,255,255,0.3);
+            border: 1px solid rgba(255,255,255,0.3);
             color: white;
-            padding: 8px 16px;
+            padding: 6px 10px;
             border-radius: 8px;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 12px;
             transition: all 0.2s;
             font-weight: 500;
+            white-space: nowrap;
         }
 
-        .theme-btn:hover {
+        .theme-btn:hover, .lang-btn:hover {
             background: rgba(255,255,255,0.2);
             border-color: rgba(255,255,255,0.5);
         }
 
-        .theme-btn.active {
+        .theme-btn.active, .lang-btn.active {
             background: rgba(255,255,255,0.3);
             border-color: white;
         }
@@ -510,10 +518,24 @@
                 font-size: 2em;
             }
 
-            .theme-selector {
+            .controls-top-right {
                 position: static;
                 justify-content: center;
-                margin-top: 20px;
+                margin-top: 10px;
+                margin-bottom: 20px;
+                padding: 0;
+                gap: 5px;
+                flex-wrap: wrap;
+            }
+
+            .theme-selector, .language-selector {
+                padding: 3px;
+                border-radius: 8px;
+            }
+
+            .theme-btn, .lang-btn {
+                font-size: 11px;
+                padding: 4px 8px;
             }
 
             .tabs {
@@ -543,7 +565,7 @@
             }
             
             body {
-                padding-bottom: 150px; /* Más espacio para el footer en móvil */
+                padding-bottom: 150px;
             }
         }
     </style>
@@ -552,91 +574,100 @@
 
 <div class="container">
     <div class="header">
-        <div class="theme-selector">
-            <button class="theme-btn" data-theme="light">☀️ Claro</button>
-            <button class="theme-btn" data-theme="dark">🌙 Oscuro</button>
-            <button class="theme-btn active" data-theme="system">💻 Sistema</button>
+        <div class="controls-top-right">
+            <div class="language-selector">
+                <button class="lang-btn active" data-lang="es">ES</button>
+                <button class="lang-btn" data-lang="en">EN</button>
+                <button class="lang-btn" data-lang="ca">CA</button>
+                <button class="lang-btn" data-lang="gl">GL</button>
+                <button class="lang-btn" data-lang="eu">EU</button>
+            </div>
+            <div class="theme-selector">
+                <button class="theme-btn" data-theme="light">☀️</button>
+                <button class="theme-btn" data-theme="dark">🌙</button>
+                <button class="theme-btn active" data-theme="system">💻</button>
+            </div>
         </div>
-        <h1>Multiprompt EDU</h1>
-        <p>Envía el mismo prompt a múltiples chatbots de IA simultáneamente y compara sus respuestas</p>
+        <h1 data-lang-key="headerTitle">Multiprompt EDU</h1>
+        <p data-lang-key="headerSubtitle">Envía el mismo prompt a múltiples chatbots de IA simultáneamente y compara sus respuestas. Utiliza la guía para encontrar ideas.</p>
     </div>
 
     <div class="content">
         <div class="instructions">
-            <h3>📋 ¿Cómo funciona?</h3>
+            <h3 data-lang-key="instTitle">📋 ¿Cómo funciona?</h3>
             <ul>
-                <li>Escribe un prompt manual o usa el **Generador** para crear un prompt estructurado.</li>
-                <li>Selecciona los chatbots de IA que quieras consultar.</li>
-                <li>Haz clic en "Enviar" y se abrirán pestañas automáticamente.</li>
-                <li>Compara las respuestas de diferentes IAs para obtener mejores resultados y estrategias docentes.</li>
+                <li data-lang-key="instLi1">Escribe un prompt manual o usa el **Generador** para crear un prompt estructurado y **obtener ideas** para tu labor docente.</li>
+                <li data-lang-key="instLi2">Selecciona los chatbots de IA que quieras consultar.</li>
+                <li data-lang-key="instLi3">Haz clic en "Enviar" y se abrirán pestañas automáticamente.</li>
+                <li data-lang-key="instLi4">Compara las respuestas de diferentes IAs para obtener mejores resultados y estrategias docentes.</li>
             </ul>
         </div>
 
         <div class="warning-box">
             <div>
-                <p><strong>Importante:</strong> Algunos chatbots necesitan haber iniciado sesión para funcionar bien. Si abres varias pestañas a la vez, el navegador podría bloquearlas: busca el aviso en la barra de direcciones para darle permiso.</p>
+                <p data-lang-key="warningText"><strong>Importante:</strong> Algunos chatbots necesitan haber iniciado sesión para funcionar bien. Si abres varias pestañas a la vez, el navegador podría bloquearlas: busca el aviso en la barra de direcciones para darle permiso.</p>
             </div>
         </div>
 
         <div class="tabs">
-            <button id="tabManual" onclick="showTab('manual')">✍️ Prompt Manual</button>
-            <button id="tabGenerator" onclick="showTab('generator')">🎯 Generador de Prompt</button>
+            <button id="tabManual" onclick="showTab('manual')" data-lang-key="tabManual">✍️ Prompt Manual</button>
+            <button id="tabGenerator" onclick="showTab('generator')" data-lang-key="tabGenerator">🎯 Generador de Prompt</button>
         </div>
 
         <div id="manual" class="tab-content">
-            <h2 style="margin-bottom: 15px;">Escribe tu prompt aquí:</h2>
-            <textarea id="manualPromptArea" placeholder="Escribe o pega aquí tu prompt personalizado. Ejemplo: 'Explica el teorema de Pitágoras de forma visual para estudiantes de 2º ESO'"></textarea>
+            <h2 style="margin-bottom: 15px;" data-lang-key="h2Manual">Escribe tu prompt aquí:</h2>
+            <textarea id="manualPromptArea" data-lang-placeholder="phManual">Escribe o pega aquí tu prompt personalizado. Ejemplo: 'Crea una pieza de análisis armónico de música del siglo XX para alumnos de 6º de Enseñanzas Profesionales de Conservatorio'</textarea>
         </div>
 
         <div id="generator" class="tab-content" style="display:none;">
-            <h2 style="margin-bottom: 20px;">Generador de Prompt Estructurado para IA Educativa</h2>
+            <h2 style="margin-bottom: 20px;" data-lang-key="h2Generator">Generador de Prompt Estructurado para IA Educativa</h2>
             
             <div class="form-group">
-                <label for="fNivel">📚 Nivel Educativo</label>
-                <input type="text" id="fNivel" placeholder="Ej: Secundaria, 1º ESO, Bachillerato, Formación Profesional">
+                <label for="fNivel" data-lang-key="fNivelLabel">📚 Nivel Educativo</label>
+                <input type="text" id="fNivel" data-lang-placeholder="phNivel" placeholder="Ej: Secundaria, 1º ESO, 6º de Enseñanzas Profesionales de Conservatorio">
             </div>
             
             <div class="form-group">
-                <label for="fEspecialidad">🎓 Especialidad o Materia</label>
-                <input type="text" id="fEspecialidad" placeholder="Ej: Matemáticas, Historia, Lengua Castellana, Tecnología">
+                <label for="fEspecialidad" data-lang-key="fEspecialidadLabel">🎓 Especialidad o Materia</label>
+                <input type="text" id="fEspecialidad" data-lang-placeholder="phEspecialidad" placeholder="Ej: Matemáticas, Historia, Lenguaje Musical, Trompeta">
             </div>
 
             <div class="form-group">
-                <label for="fCosto">😓 Aspectos de tu trabajo que te cuestan o no te gustan</label>
-                <input type="text" id="fCosto" placeholder="Ej: Corrección de exámenes, burocracia, gestionar conflictos en el aula">
+                <label for="fCosto" data-lang-key="fCostoLabel">😓 Aspectos de tu trabajo que te cuestan o no te gustan</label>
+                <input type="text" id="fCosto" data-lang-placeholder="phCosto" placeholder="Ej: Corrección de exámenes, burocracia, organizar audiciones">
             </div>
 
             <div class="form-group">
-                <label for="fGusto">⭐ Aspectos de tu trabajo en los que destacas o que te gustan</label>
-                <input type="text" id="fGusto" placeholder="Ej: Tutoría, creación de materiales interactivos, motivar estudiantes">
+                <label for="fGusto" data-lang-key="fGustoLabel">⭐ Aspectos de tu trabajo en los que destacas o que te gustan</label>
+                <input type="text" id="fGusto" data-lang-placeholder="phGusto" placeholder="Ej: Tutoría, creación de materiales interactivos, motivar estudiantes, dirección de orquesta">
             </div>
 
-            <button class="btn-secondary" onclick="generatePrompt()">🚀 Generar Prompt</button>
+            <button class="btn-secondary" onclick="generatePrompt()" data-lang-key="btnGenerate">🚀 Generar Prompt</button>
 
-            <h2 style="margin-top: 30px; margin-bottom: 15px;">Prompt Generado (puedes editarlo):</h2>
+            <h2 style="margin-top: 30px; margin-bottom: 15px;" data-lang-key="h2Generated">Prompt Generado (puedes editarlo):</h2>
             <textarea id="generatedPromptArea"></textarea>
             
-            <button class="btn-secondary" onclick="useGeneratedPrompt()">✅ Usar este Prompt</button>
+            <button class="btn-secondary" onclick="useGeneratedPrompt()" data-lang-key="btnUseGenerated">✅ Usar este Prompt</button>
         </div>
 
         <div class="section-header">
-            <h2>Selecciona los chatbots</h2>
+            <h2 data-lang-key="h2Chatbots">Selecciona los chatbots</h2>
             <div class="control-buttons">
                 <button class="control-btn" onclick="selectAll()">
-                    ✓ Todos
+                    ✓ <span data-lang-key="btnAll">Todos</span>
                 </button>
                 <button class="control-btn" onclick="deselectAll()">
-                    ✗ Ninguno
+                    ✗ <span data-lang-key="btnNone">Ninguno</span>
                 </button>
                 <button class="control-btn random" onclick="selectRandom()">
-                    🎲 Aleatorio
+                    🎲 <span data-lang-key="btnRandom">Aleatorio</span>
                 </button>
             </div>
         </div>
 
         <div class="chatbot-section">
-            <h3>✅ Chatbots con Apertura Automática</h3>
-            <p>Se abrirán las pestañas y el prompt se enviará automáticamente</p>
+            <h3 data-lang-key="h3Auto">✅ Chatbots con Apertura Automática</h3>
+            <p data-lang-key="pAuto">Se abrirán las pestañas y el prompt se enviará automáticamente</p>
             <div class="chatbot-list">
                 <div class="chatbot-item">
                     <input type="checkbox" id="chatgpt" value="ChatGPT">
@@ -666,8 +697,8 @@
         </div>
 
         <div class="chatbot-section">
-            <h3>📝 Chatbots con Pegado Manual</h3>
-            <p>Se abrirán las pestañas, pero necesitarás pegar manualmente el prompt (el texto se copiará al portapapeles)</p>
+            <h3 data-lang-key="h3Manual">📝 Chatbots con Pegado Manual</h3>
+            <p data-lang-key="pManual">Se abrirán las pestañas, pero necesitarás pegar manualmente el prompt (el texto se copiará al portapapeles)</p>
             <div class="chatbot-list">
                 <div class="chatbot-item">
                     <input type="checkbox" id="gemini" value="Gemini">
@@ -692,7 +723,7 @@
             </div>
         </div>
 
-        <button id="sendButton" class="btn-primary" onclick="sendPrompts()">
+        <button id="sendButton" class="btn-primary" onclick="sendPrompts()" data-lang-key="btnSend">
             🚀 Enviar a chatbots seleccionados
         </button>
 
@@ -701,61 +732,333 @@
 </div>
 
 <div class="footer">
-    <p>Herramienta original: <a href="https://bilateria.org/app/utils_IA/multiprompt.html" target="_blank">Multiprompt de Juan José de Haro</a>.</p>
-    <p>Adaptación (Multiprompt EDU) por <a href="http://www.jlmirall.es" target="_blank">José Luis Miralles Bono (www.jlmirall.es)</a>.</p>
-    <p>Esta obra está bajo una licencia <a href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative Commons BY-SA 4.0</a>.</p>
+    <p data-lang-key="footerOriginal">Herramienta original: <a href="https://bilateria.org/app/utils_IA/multiprompt.html" target="_blank">Multiprompt de Juan José de Haro</a>.</p>
+    <p data-lang-key="footerAdaptation">Adaptación (Multiprompt EDU) por <a href="http://www.jlmirall.es" target="_blank">José Luis Miralles Bono (www.jlmirall.es)</a>.</p>
+    <p data-lang-key="footerLicense">Esta obra está bajo una licencia <a href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative Commons BY-SA 4.0</a>.</p>
 </div>
 
 <script>
-    // Configuración de chatbots
-    const chatbots = {
-        "chatgpt": { 
-            url: "https://chat.openai.com/?q=", 
-            auto: true 
+    // --- DATOS DE TRADUCCIÓN ---
+    const translations = {
+        es: {
+            title: "Multiprompt EDU",
+            headerTitle: "Multiprompt EDU",
+            headerSubtitle: "Envía el mismo prompt a múltiples chatbots de IA simultáneamente y compara sus respuestas. Utiliza la guía para encontrar ideas.",
+            instTitle: "📋 ¿Cómo funciona?",
+            instLi1: "Escribe un prompt manual o usa el **Generador** para crear un prompt estructurado y **obtener ideas** para tu labor docente.",
+            instLi2: "Selecciona los chatbots de IA que quieras consultar.",
+            instLi3: "Haz clic en \"Enviar\" y se abrirán pestañas automáticamente.",
+            instLi4: "Compara las respuestas de diferentes IAs para obtener mejores resultados y estrategias docentes.",
+            warningText: "<strong>Importante:</strong> Algunos chatbots necesitan haber iniciado sesión para funcionar bien. Si abres varias pestañas a la vez, el navegador podría bloquearlas: busca el aviso en la barra de direcciones para darle permiso.",
+            tabManual: "✍️ Prompt Manual",
+            tabGenerator: "🎯 Generador de Prompt",
+            h2Manual: "Escribe tu prompt aquí:",
+            phManual: "Escribe o pega aquí tu prompt personalizado. Ejemplo: 'Crea una pieza de análisis armónico de música del siglo XX para alumnos de 6º de Enseñanzas Profesionales de Conservatorio'",
+            h2Generator: "Generador de Prompt Estructurado para IA Educativa",
+            fNivelLabel: "📚 Nivel Educativo",
+            phNivel: "Ej: Secundaria, 1º ESO, 6º de Enseñanzas Profesionales de Conservatorio",
+            fEspecialidadLabel: "🎓 Especialidad o Materia",
+            phEspecialidad: "Ej: Matemáticas, Historia, Lenguaje Musical, Trompeta",
+            fCostoLabel: "😓 Aspectos de tu trabajo que te cuestan o no te gustan",
+            phCosto: "Ej: Corrección de exámenes, burocracia, organizar audiciones",
+            phGustoLabel: "⭐ Aspectos de tu trabajo en los que destacas o que te gustan",
+            phGusto: "Ej: Tutoría, creación de materiales interactivos, motivar estudiantes, dirección de orquesta",
+            btnGenerate: "🚀 Generar Prompt",
+            h2Generated: "Prompt Generado (puedes editarlo):",
+            btnUseGenerated: "✅ Usar este Prompt",
+            h2Chatbots: "Selecciona los chatbots",
+            btnAll: "Todos",
+            btnNone: "Ninguno",
+            btnRandom: "Aleatorio",
+            h3Auto: "✅ Chatbots con Apertura Automática",
+            pAuto: "Se abrirán las pestañas y el prompt se enviará automáticamente",
+            h3Manual: "📝 Chatbots con Pegado Manual",
+            pManual: "Se abrirán las pestañas, pero necesitarás pegar manualmente el prompt (el texto se copiará al portapapeles)",
+            btnSend: "🚀 Enviar a chatbots seleccionados",
+            msgPromptCopied: "✅ ¡Prompt copiado al portapapeles! Abriendo pestañas...",
+            msgNoCopy: "⚠️ Error: No se pudo copiar el prompt. Abriendo pestañas...",
+            msgAutoSend: "🚀 Abriendo pestañas. El prompt se enviará automáticamente.",
+            msgNoPrompt: "⚠️ Por favor, introduce o genera un prompt.",
+            msgNoSelection: "⚠️ Por favor, selecciona al menos un chatbot.",
+            msgFormError: "⚠️ Por favor, rellena todos los campos del formulario para generar el prompt.",
+            msgGenerated: "✅ ¡Prompt generado con éxito! Puedes revisarlo y editarlo si es necesario.",
+            msgUsingGenerated: "✅ El prompt de envío será el que está en el área de 'Prompt Generado'.",
+            msgAllSelected: "✅ Todos los chatbots seleccionados",
+            msgNoneSelected: "Todos los chatbots deseleccionados",
+            msgRandomSelected: (names) => `🎲 Seleccionados aleatoriamente: ${names}`,
+            footerOriginal: "Herramienta original: <a href=\"https://bilateria.org/app/utils_IA/multiprompt.html\" target=\"_blank\">Multiprompt de Juan José de Haro</a>.",
+            footerAdaptation: "Adaptación (Multiprompt EDU) por <a href=\"http://www.jlmirall.es\" target=\"_blank\">José Luis Miralles Bono (www.jlmirall.es)</a>.",
+            footerLicense: "Esta obra está bajo una licencia <a href=\"http://creativecommons.org/licenses/by-sa/4.0/\" target=\"_blank\">Creative Commons BY-SA 4.0</a>."
         },
-        "grok": { 
-            url: "https://grok.x.com/chat?q=", 
-            auto: true 
+        en: {
+            title: "Multiprompt EDU",
+            headerTitle: "Multiprompt EDU",
+            headerSubtitle: "Send the same prompt to multiple AI chatbots simultaneously and compare their responses. Use the guide to find ideas.",
+            instTitle: "📋 How it works?",
+            instLi1: "Write a manual prompt or use the **Generator** to create a structured prompt and **get ideas** for your teaching work.",
+            instLi2: "Select the AI chatbots you want to consult.",
+            instLi3: "Click \"Send\" and tabs will open automatically.",
+            instLi4: "Compare the responses from different AIs to get better results and teaching strategies.",
+            warningText: "<strong>Important:</strong> Some chatbots require logging in to work properly. If you open multiple tabs simultaneously, the browser might block them: look for the warning in the address bar to grant permission.",
+            tabManual: "✍️ Manual Prompt",
+            tabGenerator: "🎯 Prompt Generator",
+            h2Manual: "Enter your prompt here:",
+            phManual: "Type or paste your custom prompt here. Example: 'Create a piece of harmonic analysis of 20th-century music for students in 6th year of Professional Conservatory Studies'",
+            h2Generator: "Structured Prompt Generator for Educational AI",
+            fNivelLabel: "📚 Educational Level",
+            phNivel: "E.g.: Secondary, 1st Year ESO, 6th Year Professional Conservatory Studies",
+            fEspecialidadLabel: "🎓 Specialty or Subject",
+            phEspecialidad: "E.g.: Mathematics, History, Musical Language, Trumpet",
+            fCostoLabel: "😓 Aspects of your job that you find difficult or dislike",
+            phCosto: "E.g.: Grading exams, bureaucracy, organizing auditions",
+            phGustoLabel: "⭐ Aspects of your job that you excel at or enjoy",
+            phGusto: "E.g.: Tutoring, creation of interactive materials, motivating students, orchestra conducting",
+            btnGenerate: "🚀 Generate Prompt",
+            h2Generated: "Generated Prompt (you can edit it):",
+            btnUseGenerated: "✅ Use this Prompt",
+            h2Chatbots: "Select the chatbots",
+            btnAll: "All",
+            btnNone: "None",
+            btnRandom: "Random",
+            h3Auto: "✅ Automatic Opening Chatbots",
+            pAuto: "Tabs will open and the prompt will be sent automatically",
+            h3Manual: "📝 Manual Paste Chatbots",
+            pManual: "Tabs will open, but you will need to manually paste the prompt (the text will be copied to the clipboard)",
+            btnSend: "🚀 Send to selected chatbots",
+            msgPromptCopied: "✅ Prompt copied to clipboard! Opening tabs...",
+            msgNoCopy: "⚠️ Error: Could not copy prompt. Opening tabs...",
+            msgAutoSend: "🚀 Opening tabs. Prompt will be sent automatically.",
+            msgNoPrompt: "⚠️ Please enter or generate a prompt.",
+            msgNoSelection: "⚠️ Please select at least one chatbot.",
+            msgFormError: "⚠️ Please fill in all fields in the form to generate the prompt.",
+            msgGenerated: "✅ Prompt successfully generated! You can review and edit it if necessary.",
+            msgUsingGenerated: "✅ The prompt to send will be the one in the 'Generated Prompt' area.",
+            msgAllSelected: "✅ All chatbots selected",
+            msgNoneSelected: "All chatbots deselected",
+            msgRandomSelected: (names) => `🎲 Randomly selected: ${names}`,
+            footerOriginal: "Original tool: <a href=\"https://bilateria.org/app/utils_IA/multiprompt.html\" target=\"_blank\">Multiprompt by Juan José de Haro</a>.",
+            footerAdaptation: "Adaptation (Multiprompt EDU) by <a href=\"http://www.jlmirall.es\" target=\"_blank\">José Luis Miralles Bono (www.jlmirall.es)</a>.",
+            footerLicense: "This work is licensed under a <a href=\"http://creativecommons.org/licenses/by-sa/4.0/\" target=\"_blank\">Creative Commons BY-SA 4.0 License</a>."
         },
-        "copilot": { 
-            url: "https://copilot.microsoft.com/?q=", 
-            auto: true 
+        ca: {
+            title: "Multiprompt EDU",
+            headerTitle: "Multiprompt EDU",
+            headerSubtitle: "Envia el mateix prompt a múltiples chatbots d'IA simultàniament i compara les seves respostes. Fes servir la guia per trobar idees.",
+            instTitle: "📋 Com funciona?",
+            instLi1: "Escriu un prompt manual o fes servir el **Generador** per crear un prompt estructurat i **obtenir idees** per a la teva tasca docent.",
+            instLi2: "Selecciona els chatbots d'IA que vulguis consultar.",
+            instLi3: "Fes clic a \"Enviar\" i s'obriran pestanyes automàticament.",
+            instLi4: "Compara les respostes de diferents IAs per obtenir millors resultats i estratègies docents.",
+            warningText: "<strong>Important:</strong> Alguns chatbots necessiten haver iniciat la sessió per funcionar bé. Si obres diverses pestanyes a la vegada, el navegador podria bloquejar-les: cerca l'avís a la barra d'adreces per donar-li permís.",
+            tabManual: "✍️ Prompt Manual",
+            tabGenerator: "🎯 Generador de Prompt",
+            h2Manual: "Escriu el teu prompt aquí:",
+            phManual: "Escriu o enganxa aquí el teu prompt personalitzat. Exemple: 'Crea una peça d'anàlisi harmònica de música del segle XX per a alumnes de 6è d'Ensenyaments Professionals de Conservatori'",
+            h2Generator: "Generador de Prompt Estructurat per a IA Educativa",
+            fNivelLabel: "📚 Nivell Educatiu",
+            phNivel: "Ex: Secundària, 1r ESO, 6è d'Ensenyaments Professionals de Conservatori",
+            fEspecialidadLabel: "🎓 Especialitat o Matèria",
+            phEspecialidad: "Ex: Matemàtiques, Història, Llenguatge Musical, Trompeta",
+            fCostoLabel: "😓 Aspectes de la teva feina que et costen o no t'agraden",
+            phCosto: "Ex: Correcció d'exàmens, burocràcia, organitzar audicions",
+            phGustoLabel: "⭐ Aspectes de la teva feina en els que destaques o que t'agraden",
+            phGusto: "Ex: Tutoria, creació de materials interactius, motivar estudiants, direcció d'orquestra",
+            btnGenerate: "🚀 Generar Prompt",
+            h2Generated: "Prompt Generat (pots editar-lo):",
+            btnUseGenerated: "✅ Utilitzar aquest Prompt",
+            h2Chatbots: "Selecciona els chatbots",
+            btnAll: "Tots",
+            btnNone: "Cap",
+            btnRandom: "Aleatori",
+            h3Auto: "✅ Chatbots amb Obertura Automàtica",
+            pAuto: "S'obriran les pestanyes i el prompt s'enviarà automàticament",
+            h3Manual: "📝 Chatbots amb Enganxat Manual",
+            pManual: "S'obriran les pestanyes, però necessitaràs enganxar manualment el prompt (el text es copiarà al porta-retalls)",
+            btnSend: "🚀 Enviar als chatbots seleccionats",
+            msgPromptCopied: "✅ Prompt copiat al porta-retalls! Obrint pestanyes...",
+            msgNoCopy: "⚠️ Error: No s'ha pogut copiar el prompt. Obrint pestanyes...",
+            msgAutoSend: "🚀 Obrint pestanyes. El prompt s'enviarà automàticament.",
+            msgNoPrompt: "⚠️ Si us plau, introdueix o genera un prompt.",
+            msgNoSelection: "⚠️ Si us plau, selecciona almenys un chatbot.",
+            msgFormError: "⚠️ Si us plau, omple tots els camps del formulari per generar el prompt.",
+            msgGenerated: "✅ Prompt generat amb èxit! Pots revisar-lo i editar-lo si cal.",
+            msgUsingGenerated: "✅ El prompt d'enviament serà el que es troba a l'àrea de 'Prompt Generat'.",
+            msgAllSelected: "✅ Tots els chatbots seleccionats",
+            msgNoneSelected: "Tots els chatbots deseleccionats",
+            msgRandomSelected: (names) => `🎲 Seleccionats aleatòriament: ${names}`,
+            footerOriginal: "Eina original: <a href=\"https://bilateria.org/app/utils_IA/multiprompt.html\" target=\"_blank\">Multiprompt de Juan José de Haro</a>.",
+            footerAdaptation: "Adaptació (Multiprompt EDU) per <a href=\"http://www.jlmirall.es\" target=\"_blank\">José Luis Miralles Bono (www.jlmirall.es)</a>.",
+            footerLicense: "Aquesta obra està sota una llicència <a href=\"http://creativecommons.org/licenses/by-sa/4.0/\" target=\"_blank\">Creative Commons BY-SA 4.0</a>."
         },
-        "perplexity": { 
-            url: "https://www.perplexity.ai/search?q=", 
-            auto: true 
+        gl: {
+            title: "Multiprompt EDU",
+            headerTitle: "Multiprompt EDU",
+            headerSubtitle: "Envía o mesmo prompt a múltiples chatbots de IA simultaneamente e compara as súas respostas. Usa a guía para atopar ideas.",
+            instTitle: "📋 Como funciona?",
+            instLi1: "Escribe un prompt manual ou usa o **Xerador** para crear un prompt estruturado e **obter ideas** para o teu labor docente.",
+            instLi2: "Selecciona os chatbots de IA que queiras consultar.",
+            instLi3: "Preme en \"Enviar\" e abriranse pestanas automaticamente.",
+            instLi4: "Compara as respostas de diferentes IAs para obter mellores resultados e estratexias docentes.",
+            warningText: "<strong>Importante:</strong> Algúns chatbots necesitan ter iniciado sesión para funcionar ben. Se abres varias pestanas á vez, o navegador podería bloquealas: busca o aviso na barra de enderezos para darlle permiso.",
+            tabManual: "✍️ Prompt Manual",
+            tabGenerator: "🎯 Xerador de Prompt",
+            h2Manual: "Escribe o teu prompt aquí:",
+            phManual: "Escribe ou pega aquí o teu prompt personalizado. Exemplo: 'Crea unha peza de análise harmónica de música do século XX para alumnos de 6º de Ensinanzas Profesionais de Conservatorio'",
+            h2Generator: "Xerador de Prompt Estruturado para IA Educativa",
+            fNivelLabel: "📚 Nivel Educativo",
+            phNivel: "Ex: Secundaria, 1º ESO, 6º de Ensinanzas Profesionais de Conservatorio",
+            fEspecialidadLabel: "🎓 Especialidade ou Materia",
+            phEspecialidad: "Ex: Matemáticas, Historia, Linguaxe Musical, Trompeta",
+            fCostoLabel: "😓 Aspectos do teu traballo que che custan ou non che gustan",
+            phCosto: "Ex: Corrección de exames, burocracia, organizar audicións",
+            phGustoLabel: "⭐ Aspectos do teu traballo nos que destacas ou che gustan",
+            phGusto: "Ex: Titoría, creación de materiais interactivos, motivar estudantes, dirección de orquestra",
+            btnGenerate: "🚀 Xerar Prompt",
+            h2Generated: "Prompt Xerado (podes editalo):",
+            btnUseGenerated: "✅ Usar este Prompt",
+            h2Chatbots: "Selecciona os chatbots",
+            btnAll: "Todos",
+            btnNone: "Ningún",
+            btnRandom: "Aleatorio",
+            h3Auto: "✅ Chatbots con Apertura Automática",
+            pAuto: "Abriranse as pestanas e o prompt enviarase automaticamente",
+            h3Manual: "📝 Chatbots con Pegado Manual",
+            pManual: "Abriranse as pestanas, pero necesitarás pegar manualmente o prompt (o texto copiarase ao portapapeis)",
+            btnSend: "🚀 Enviar aos chatbots seleccionados",
+            msgPromptCopied: "✅ Prompt copiado ao portapapeis! Abrindo pestanas...",
+            msgNoCopy: "⚠️ Erro: Non se puido copiar o prompt. Abrindo pestanas...",
+            msgAutoSend: "🚀 Abrindo pestanas. O prompt enviarase automaticamente.",
+            msgNoPrompt: "⚠️ Por favor, introduce ou xera un prompt.",
+            msgNoSelection: "⚠️ Por favor, selecciona polo menos un chatbot.",
+            msgFormError: "⚠️ Por favor, enche todos os campos do formulario para xerar o prompt.",
+            msgGenerated: "✅ Prompt xerado con éxito! Podes revisalo e editalo se é necesario.",
+            msgUsingGenerated: "✅ O prompt de envío será o que está na área de 'Prompt Xerado'.",
+            msgAllSelected: "✅ Todos os chatbots seleccionados",
+            msgNoneSelected: "Todos os chatbots deseleccionados",
+            msgRandomSelected: (names) => `🎲 Seleccionados aleatoriamente: ${names}`,
+            footerOriginal: "Ferramenta orixinal: <a href=\"https://bilateria.org/app/utils_IA/multiprompt.html\" target=\"_blank\">Multiprompt de Juan José de Haro</a>.",
+            footerAdaptation: "Adaptación (Multiprompt EDU) por <a href=\"http://www.jlmirall.es\" target=\"_blank\">José Luis Miralles Bono (www.jlmirall.es)</a>.",
+            footerLicense: "Esta obra está baixo unha licenza <a href=\"http://creativecommons.org/licenses/by-sa/4.0/\" target=\"_blank\">Creative Commons BY-SA 4.0</a>."
         },
-        "lechat": { 
-            url: "https://chat.mistral.ai/chat?prompt=", 
-            auto: true 
-        },
-        "claude": { 
-            url: "https://claude.ai/chat?prompt=", 
-            auto: true 
-        },
-        "gemini": { 
-            url: "https://gemini.google.com/app", 
-            auto: false 
-        },
-        "kimi": { 
-            url: "https://kimi.ai/", 
-            auto: false 
-        },
-        "deepseek": { 
-            url: "https://www.deepseek.com/chat", 
-            auto: false 
-        },
-        "qwen": { 
-            url: "https://qianwen.tongyi.com/chat", 
-            auto: false 
-        },
-        "phind": { 
-            url: "https://www.phind.com/search", 
-            auto: false 
+        eu: {
+            title: "Multiprompt EDU",
+            headerTitle: "Multiprompt EDU",
+            headerSubtitle: "Prompt bera bidali AIko txatbot anitzei aldi berean eta haien erantzunak alderatu. Erabili gida ideiak aurkitzeko.",
+            instTitle: "📋 Nola funtzionatzen du?",
+            instLi1: "Idatzi prompt bat eskuz edo erabili **Sortzailea** prompt egituratu bat sortzeko eta zure irakasle-lanerako **ideiak lortzeko**.",
+            instLi2: "Kontsultatu nahi dituzun AIko txatbotak hautatu.",
+            instLi3: "Sakatu \"Bidali\" eta fitxak automatikoki irekiko dira.",
+            instLi4: "AI ezberdinen erantzunak alderatu emaitza hobeak eta estrategia didaktikoak lortzeko.",
+            warningText: "<strong>Garrantzitsua:</strong> Txatbot batzuek saioa hasita izatea behar dute ondo funtzionatzeko. Fitxa anitz irekitzen badituzu aldi berean, nabigatzaileak blokeatu ahal izango ditu: bilatu helbide-barrako oharra baimena emateko.",
+            tabManual: "✍️ Eskuzko Prompt",
+            tabGenerator: "🎯 Prompt Sortzailea",
+            h2Manual: "Idatzi zure prompta hemen:",
+            phManual: "Idatzi edo itsatsi hemen zure prompt pertsonalizatua. Adibidea: 'Sortu XX. mendeko musika azterketa harmonikoko pieza bat Kontserbatorioko Irakaskuntza Profesionaletako 6. mailako ikasleentzat'",
+            h2Generator: "AI hezkuntzarako Prompt Egituratuaren Sortzailea",
+            fNivelLabel: "📚 Hezkuntza Maila",
+            phNivel: "Adib.: Bigarren Hezkuntza, 1. mailako DBH, Kontserbatorioko Irakaskuntza Profesionaletako 6. maila",
+            fEspecialidadLabel: "🎓 Espezialitatea edo Gaia",
+            phEspecialidad: "Adib.: Matematika, Historia, Musika Lengoaia, Tronpeta",
+            fCostoLabel: "😓 Zure laneko kostuak edo gustatzen ez zaizkizun alderdiak",
+            phCosto: "Adib.: Azterketen zuzenketa, burokrazia, entzunaldiak antolatzea",
+            phGustoLabel: "⭐ Zure laneko alderdiak non nabarmentzen zaren edo gustatzen zaizkizunak",
+            phGusto: "Adib.: Tutoretza, material interaktiboen sorkuntza, ikasleak motibatzea, orkestra zuzendaritza",
+            btnGenerate: "🚀 Prompt Sortu",
+            h2Generated: "Prompt Sortua (editatu dezakezu):",
+            btnUseGenerated: "✅ Prompt hau Erabili",
+            h2Chatbots: "Txatbotak hautatu",
+            btnAll: "Guztiak",
+            btnNone: "Bat ere ez",
+            btnRandom: "Ausazkoa",
+            h3Auto: "✅ Irekiera Automatikoa duten Txatbotak",
+            pAuto: "Fitxak irekiko dira eta prompta automatikoki bidaliko da",
+            h3Manual: "📝 Eskuz Itsasteko Txatbotak",
+            pManual: "Fitxak irekiko dira, baina prompta eskuz itsatsi beharko duzu (testua arbelera kopiatuko da)",
+            btnSend: "🚀 Hautatutako txatbotetara bidali",
+            msgPromptCopied: "✅ Prompt arbelera kopiatuta! Fitxak irekitzen...",
+            msgNoCopy: "⚠️ Errorea: Ezin izan da prompta kopiatu. Fitxak irekitzen...",
+            msgAutoSend: "🚀 Fitxak irekitzen. Prompt automatikoki bidaliko da.",
+            msgNoPrompt: "⚠️ Mesedez, idatzi edo sortu prompt bat.",
+            msgNoSelection: "⚠️ Mesedez, hautatu gutxienez txatbot bat.",
+            msgFormError: "⚠️ Mesedez, bete inprimakiko eremu guztiak prompta sortzeko.",
+            msgGenerated: "✅ Prompta arrakastaz sortu da! Berrikusi eta editatu dezakezu behar izanez gero.",
+            msgUsingGenerated: "✅ Bidaltzeko prompta 'Prompt Sortua' eremuan dagoena izango da.",
+            msgAllSelected: "✅ Txatbot guztiak hautatuta",
+            msgNoneSelected: "Txatbot guztiak desautatuta",
+            msgRandomSelected: (names) => `🎲 Ausaz hautatutakoak: ${names}`,
+            footerOriginal: "Jatorrizko tresna: <a href=\"https://bilateria.org/app/utils_IA/multiprompt.html\" target=\"_blank\">Juan José de Haro-ren Multiprompt</a>.",
+            footerAdaptation: "Egokitzapena (Multiprompt EDU) <a href=\"http://www.jlmirall.es\" target=\"_blank\">José Luis Miralles Bono-k (www.jlmirall.es)</a>.",
+            footerLicense: "Lan honek <a href=\"http://creativecommons.org/licenses/by-sa/4.0/\" target=\"_blank\">Creative Commons BY-SA 4.0 lizentzia</a> baten pean dago."
         }
     };
 
+    // --- CÓDIGO JS RESTANTE ---
+
+    const chatbots = {
+        "chatgpt": { url: "https://chat.openai.com/?q=", auto: true },
+        "grok": { url: "https://grok.x.com/chat?q=", auto: true },
+        "copilot": { url: "https://copilot.microsoft.com/?q=", auto: true },
+        "perplexity": { url: "https://www.perplexity.ai/search?q=", auto: true },
+        "lechat": { url: "https://chat.mistral.ai/chat?prompt=", auto: true },
+        "claude": { url: "https://claude.ai/chat?prompt=", auto: true },
+        "gemini": { url: "https://gemini.google.com/app", auto: false },
+        "kimi": { url: "https://kimi.ai/", auto: false },
+        "deepseek": { url: "https://www.deepseek.com/chat", auto: false },
+        "qwen": { url: "https://qianwen.tongyi.com/chat", auto: false },
+        "phind": { url: "https://www.phind.com/search", auto: false }
+    };
+
     let currentPromptSource = 'manual';
+    let currentLang = 'es';
+
+    // --- SISTEMA DE TRADUCCIÓN ---
+    function setLanguage(lang) {
+        if (!translations[lang]) return;
+        currentLang = lang;
+        document.documentElement.lang = lang;
+        localStorage.setItem('lang', lang);
+
+        document.querySelectorAll('[data-lang-key]').forEach(el => {
+            const key = el.getAttribute('data-lang-key');
+            if (translations[lang][key]) {
+                el.innerHTML = translations[lang][key];
+            }
+        });
+        
+        document.querySelectorAll('[data-lang-placeholder]').forEach(el => {
+            const key = el.getAttribute('data-lang-placeholder');
+            if (translations[lang][key]) {
+                el.setAttribute('placeholder', translations[lang][key]);
+            }
+        });
+
+        // Actualizar mensajes por defecto en las áreas de texto (ejemplo manual)
+        if (lang !== 'es') {
+            const manualArea = document.getElementById('manualPromptArea');
+            if (manualArea.value.startsWith('Escribe o pega aquí tu prompt')) {
+                 manualArea.value = translations[lang]['phManual'];
+            }
+        }
+        
+        updateLanguageButtons(lang);
+    }
+
+    function updateLanguageButtons(activeLang) {
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.lang === activeLang);
+        });
+    }
+
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            setLanguage(btn.dataset.lang);
+            displayMessage(currentLang === 'es' ? 'Idioma cambiado a Español' : 
+                           currentLang === 'en' ? 'Language changed to English' :
+                           currentLang === 'ca' ? 'Idioma canviat a Català' :
+                           currentLang === 'gl' ? 'Idioma cambiado a Galego' :
+                           currentLang === 'eu' ? 'Hizkuntza aldatu da Euskarara', false);
+        });
+    });
 
     // --- SISTEMA DE TEMAS ---
     function initTheme() {
@@ -821,14 +1124,14 @@
         Object.keys(chatbots).forEach(id => {
             document.getElementById(id).checked = true;
         });
-        displayMessage('✅ Todos los chatbots seleccionados');
+        displayMessage(translations[currentLang]['msgAllSelected']);
     }
 
     function deselectAll() {
         Object.keys(chatbots).forEach(id => {
             document.getElementById(id).checked = false;
         });
-        displayMessage('Todos los chatbots deseleccionados');
+        displayMessage(translations[currentLang]['msgNoneSelected']);
     }
 
     function selectRandom() {
@@ -846,7 +1149,7 @@
         
         const names = selected.map(id => document.querySelector(`label[for="${id}"]`).textContent).join(', ');
         
-        displayMessage(`🎲 Seleccionados aleatoriamente: ${names}`);
+        displayMessage(translations[currentLang]['msgRandomSelected'](names));
     }
 
     // --- FUNCIONES DE GENERADOR (PROMPT AVANZADO) ---
@@ -857,7 +1160,7 @@
         const gusto = document.getElementById('fGusto').value.trim();
 
         if (!nivel || !especialidad || !costo || !gusto) {
-            displayMessage("⚠️ Por favor, rellena todos los campos del formulario para generar el prompt.", true);
+            displayMessage(translations[currentLang]['msgFormError'], true);
             return;
         }
 
@@ -889,13 +1192,13 @@ El tono debe ser **profesional, inspirador y altamente práctico**.
 Formatea tu respuesta usando **encabezados de Markdown** (ej. \`##\`) para cada una de las tres secciones (A, B y C) y **listas numeradas o de viñetas** según corresponda.`.trim();
         
         document.getElementById('generatedPromptArea').value = promptTemplate;
-        displayMessage("✅ ¡Prompt generado con éxito! Puedes revisarlo y editarlo si es necesario.");
+        displayMessage(translations[currentLang]['msgGenerated']);
     }
     
     function useGeneratedPrompt() {
         currentPromptSource = 'generated';
         document.getElementById('generatedPromptArea').focus();
-        displayMessage("✅ El prompt de envío será el que está en el área de 'Prompt Generado'.");
+        displayMessage(translations[currentLang]['msgUsingGenerated']);
     }
 
     // --- FUNCIONES DE ENVÍO ---
@@ -921,7 +1224,7 @@ Formatea tu respuesta usando **encabezados de Markdown** (ej. \`##\`) para cada 
         const selectedChatbots = [];
         
         if (!prompt) {
-            displayMessage("⚠️ Por favor, introduce o genera un prompt.", true);
+            displayMessage(translations[currentLang]['msgNoPrompt'], true);
             return;
         }
 
@@ -932,7 +1235,7 @@ Formatea tu respuesta usando **encabezados de Markdown** (ej. \`##\`) para cada 
         }
         
         if (selectedChatbots.length === 0) {
-            displayMessage("⚠️ Por favor, selecciona al menos un chatbot.", true);
+            displayMessage(translations[currentLang]['msgNoSelection'], true);
             return;
         }
 
@@ -942,12 +1245,12 @@ Formatea tu respuesta usando **encabezados de Markdown** (ej. \`##\`) para cada 
         if (needsManualPaste) {
             copySuccess = await copyToClipboard(prompt);
             if (copySuccess) {
-                displayMessage("✅ ¡Prompt copiado al portapapeles! Abriendo pestañas...");
+                displayMessage(translations[currentLang]['msgPromptCopied']);
             } else {
-                displayMessage("⚠️ Error: No se pudo copiar el prompt. Abriendo pestañas...", true);
+                displayMessage(translations[currentLang]['msgNoCopy'], true);
             }
         } else {
-            displayMessage("🚀 Abriendo pestañas. El prompt se enviará automáticamente.");
+            displayMessage(translations[currentLang]['msgAutoSend']);
         }
 
         selectedChatbots.forEach(cb => {
@@ -964,6 +1267,11 @@ Formatea tu respuesta usando **encabezados de Markdown** (ej. \`##\`) para cada 
     // --- INICIALIZACIÓN ---
     document.addEventListener('DOMContentLoaded', () => {
         initTheme();
+        
+        // Inicializar idioma
+        const savedLang = localStorage.getItem('lang') || 'es';
+        setLanguage(savedLang);
+        
         showTab('manual');
     });
 </script>
