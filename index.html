@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Multiprompt - Réplica</title>
+    <title>Multiprompt - Réplica con Generador</title>
     <style>
         body {
             font-family: sans-serif;
@@ -12,7 +12,7 @@
             color: #333;
         }
         .container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
             background: #fff;
             padding: 30px;
@@ -24,7 +24,62 @@
             text-align: center;
             margin-bottom: 20px;
         }
-        textarea {
+        
+        /* Controles de Pestañas */
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        .tabs button {
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #eee;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.2s, border-bottom 0.2s;
+            border-bottom: 3px solid transparent;
+        }
+        .tabs button.active {
+            background-color: #fff;
+            border-bottom: 3px solid #007bff;
+            font-weight: bold;
+        }
+        .tab-content {
+            padding: 10px 0;
+        }
+
+        /* Estilos del Generador (Formulario) */
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #555;
+        }
+        .form-group input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        #generatedPromptArea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #4CAF50;
+            border-radius: 4px;
+            resize: vertical;
+            min-height: 150px;
+            font-size: 16px;
+            box-sizing: border-box;
+            background-color: #e6ffe6;
+        }
+
+        /* Estilos de Pestaña Principal */
+        #manualPromptArea {
             width: 98%;
             padding: 10px;
             margin-bottom: 20px;
@@ -34,6 +89,7 @@
             min-height: 150px;
             font-size: 16px;
         }
+        
         .chatbot-section {
             margin-bottom: 20px;
             border-top: 2px solid #eee;
@@ -56,7 +112,7 @@
             margin-left: 8px;
             cursor: pointer;
         }
-        button {
+        button#sendButton {
             display: block;
             width: 100%;
             padding: 15px;
@@ -67,8 +123,9 @@
             font-size: 18px;
             cursor: pointer;
             transition: background-color 0.3s;
+            margin-top: 20px;
         }
-        button:hover {
+        button#sendButton:hover {
             background-color: #218838;
         }
         .message {
@@ -86,23 +143,63 @@
 <body>
 
 <div class="container">
-    <h1>Multiprompt - Réplica</h1>
-    <p>Envía el mismo prompt a múltiples chatbots simultáneamente.</p>
+    <h1>Multiprompt Educativo</h1>
+    <p>Envía el mismo prompt a múltiples chatbots simultáneamente. Permite las ventanas emergentes.</p>
 
-    <p style="color: red; font-weight: bold;">⚠️ Recuerda permitir las ventanas emergentes (pop-ups) en tu navegador para esta página.</p>
+    <div class="tabs">
+        <button id="tabManual" onclick="showTab('manual')">Prompt Manual</button>
+        <button id="tabGenerator" onclick="showTab('generator')">Generador de Prompt Estructurado</button>
+    </div>
 
-    <h2>Pega tu prompt aquí:</h2>
-    <textarea id="promptTextarea" placeholder="Escribe tu prompt..."></textarea>
+    <div id="manual" class="tab-content">
+        <h2>Pega tu prompt aquí:</h2>
+        <textarea id="manualPromptArea" placeholder="Escribe o pega aquí tu prompt personalizado."></textarea>
+    </div>
+
+    <div id="generator" class="tab-content" style="display:none;">
+        <h2>Fórmulario para generar Prompt de IA Educativa:</h2>
+        
+        <div class="form-group">
+            <label for="fNivel">Nivel Educativo en el que trabajas (ej: Bachillerato, Primaria, Formación Profesional):</label>
+            <input type="text" id="fNivel" placeholder="Ej: Secundaria, 1º ESO">
+        </div>
+        
+        <div class="form-group">
+            <label for="fEspecialidad">Especialidad (ej: Matemáticas, Historia, Lengua Castellana):</label>
+            <input type="text" id="fEspecialidad" placeholder="Ej: Tecnología, Filosofía">
+        </div>
+
+        <div class="form-group">
+            <label for="fCosto">Aspectos de tu trabajo que te cuestan o no te gustan (ej: corrección de exámenes, planificación de reuniones):</label>
+            <input type="text" id="fCosto" placeholder="Ej: Burocracia, gestionar conflictos en el aula">
+        </div>
+
+        <div class="form-group">
+            <label for="fGusto">Aspectos de tu trabajo que te gustan o que destacas en ellas (ej: creatividad en el diseño de actividades, relación con los alumnos):</label>
+            <input type="text" id="fGusto" placeholder="Ej: Tutoría, creación de materiales interactivos">
+        </div>
+
+        <button onclick="generatePrompt()">Generar Prompt</button>
+
+        <h2 style="margin-top: 20px;">Prompt Generado (Edita si es necesario):</h2>
+        <textarea id="generatedPromptArea" readonly></textarea>
+        
+        <button onclick="useGeneratedPrompt()">Usar este Prompt</button>
+    </div>
 
     <h2>Selecciona los chatbots:</h2>
 
     <div class="chatbot-section">
         <h3>Chatbots con Apertura Automática ✓</h3>
-        <p>El prompt se enviará automáticamente (usando parámetros de URL).</p>
+        <p>Se abrirán las pestañas y el prompt se enviará automáticamente.</p>
         <div class="chatbot-list">
             <div class="chatbot-item">
                 <input type="checkbox" id="chatgpt" value="ChatGPT">
                 <label for="chatgpt">ChatGPT</label>
+            </div>
+            <div class="chatbot-item">
+                <input type="checkbox" id="grok" value="Grok">
+                <label for="grok">Grok</label>
             </div>
             <div class="chatbot-item">
                 <input type="checkbox" id="copilot" value="Microsoft Copilot">
@@ -125,11 +222,19 @@
 
     <div class="chatbot-section">
         <h3>Chatbots con Pegado Manual !</h3>
-        <p>Se abrirán, pero necesitarás pegar manualmente el prompt (se copiará automáticamente al portapapeles).</p>
+        <p>Se abrirán las pestañas, pero necesitarás pegar manualmente el prompt (el texto se copiará al portapapeles).</p>
         <div class="chatbot-list">
             <div class="chatbot-item">
                 <input type="checkbox" id="gemini" value="Gemini">
                 <label for="gemini">Gemini</label>
+            </div>
+            <div class="chatbot-item">
+                <input type="checkbox" id="kimi" value="Kimi">
+                <label for="kimi">Kimi</label>
+            </div>
+            <div class="chatbot-item">
+                <input type="checkbox" id="deepseek" value="DeepSeek">
+                <label for="deepseek">DeepSeek</label>
             </div>
             <div class="chatbot-item">
                 <input type="checkbox" id="qwen" value="Qwen">
@@ -142,16 +247,21 @@
         </div>
     </div>
 
-    <button onclick="sendPrompts()">Enviar a chatbots seleccionados</button>
+    <button id="sendButton" onclick="sendPrompts()">Enviar a chatbots seleccionados</button>
 
     <div id="messageBox" class="message"></div>
 </div>
 
 <script>
+    // Objeto con la configuración original (sin el fix de Google) y los nuevos chatbots
     const chatbots = {
         // Chatbots con envío automático (el prompt va en la URL)
         "chatgpt": { 
             url: "https://chat.openai.com/?q=", 
+            auto: true 
+        },
+        "grok": { 
+            url: "https://grok.x.com/chat?q=", 
             auto: true 
         },
         "copilot": { 
@@ -176,6 +286,14 @@
             url: "https://gemini.google.com/app", 
             auto: false 
         },
+        "kimi": { 
+            url: "https://kimi.ai/", 
+            auto: false 
+        },
+        "deepseek": { 
+            url: "https://www.deepseek.com/chat", 
+            auto: false 
+        },
         "qwen": { 
             url: "https://qianwen.tongyi.com/chat", 
             auto: false 
@@ -184,8 +302,24 @@
             url: "https://www.phind.com/search", 
             auto: false 
         }
-        // Puedes añadir más aquí...
     };
+
+    let currentPromptSource = 'manual'; // 'manual' o 'generated'
+
+    // --- Funciones de Interfaz (Pestañas y Mensajes) ---
+
+    function showTab(tabId) {
+        // Ocultar todos los contenidos y desactivar botones
+        document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
+        document.querySelectorAll('.tabs button').forEach(el => el.classList.remove('active'));
+
+        // Mostrar el contenido y activar el botón
+        document.getElementById(tabId).style.display = 'block';
+        document.getElementById('tab' + (tabId === 'manual' ? 'Manual' : 'Generator')).classList.add('active');
+        
+        // Actualizar el origen del prompt
+        currentPromptSource = tabId === 'manual' ? 'manual' : 'generated';
+    }
 
     function displayMessage(text, isError = false) {
         const msgBox = document.getElementById('messageBox');
@@ -195,10 +329,43 @@
         msgBox.style.borderColor = isError ? '#f5c6cb' : '#c3e6cb';
         msgBox.style.display = 'block';
         
-        // Ocultar el mensaje después de 5 segundos
         setTimeout(() => {
             msgBox.style.display = 'none';
         }, 5000);
+    }
+
+    // --- Funciones de Lógica (Generador y Envío) ---
+
+    function generatePrompt() {
+        const nivel = document.getElementById('fNivel').value.trim();
+        const especialidad = document.getElementById('fEspecialidad').value.trim();
+        const costo = document.getElementById('fCosto').value.trim();
+        const gusto = document.getElementById('fGusto').value.trim();
+
+        if (!nivel || !especialidad || !costo || !gusto) {
+            displayMessage("Por favor, rellena todos los campos del formulario para generar el prompt.", true);
+            return;
+        }
+
+        const promptTemplate = `
+Eres un experto en el uso de la Inteligencia Artificial aplicado a la educación. Trabajo en la especialidad de ${especialidad} y mi público son estudiantes de ${nivel}.
+
+1.  **Usos de la IA:** En primer lugar, necesito una lista exhaustiva y creativa (sin entrar en detalles) de los diferentes usos que la IA puede ofrecer para la enseñanza en ${especialidad} para estudiantes de ${nivel}.
+
+2.  **Productividad y Bienestar:** A continuación, quiero que profundices en cómo la IA puede ayudarme específicamente a mejorar o aliviar aquellos aspectos de mi trabajo que me cuestan, como ${costo}. Además, quiero que me indiques cómo puede potenciar mis puntos fuertes, como ${gusto}.
+
+Quiero que las respuestas sean claras, prácticas y que se centren en soluciones concretas para mi día a día.
+        `.trim();
+        
+        document.getElementById('generatedPromptArea').value = promptTemplate;
+        displayMessage("¡Prompt generado con éxito! Puedes revisarlo y editarlo si es necesario.");
+    }
+    
+    function useGeneratedPrompt() {
+        // Simplemente cambia el foco al área de texto generada
+        currentPromptSource = 'generated';
+        document.getElementById('generatedPromptArea').focus();
+        displayMessage("El prompt de envío será el que está en el área de 'Prompt Generado'.");
     }
 
     async function copyToClipboard(text) {
@@ -212,12 +379,20 @@
     }
 
     async function sendPrompts() {
-        const prompt = document.getElementById('promptTextarea').value.trim();
+        let prompt;
+        
+        // Determinar qué prompt usar (manual o generado/editado)
+        if (currentPromptSource === 'manual') {
+            prompt = document.getElementById('manualPromptArea').value.trim();
+        } else {
+            prompt = document.getElementById('generatedPromptArea').value.trim();
+        }
+
         const selectedChatbots = [];
         
         // 1. Validar el prompt
         if (!prompt) {
-            displayMessage("Por favor, introduce un prompt.", true);
+            displayMessage("Por favor, introduce o genera un prompt.", true);
             return;
         }
 
@@ -242,28 +417,30 @@
             if (copySuccess) {
                 displayMessage("¡Prompt copiado al portapapeles! Abriendo pestañas...");
             } else {
-                displayMessage("Error: No se pudo copiar el prompt. Por favor, cópialo manualmente. Abriendo pestañas...", true);
+                displayMessage("Error: No se pudo copiar el prompt. Abriendo pestañas...", true);
             }
         } else {
-            displayMessage("Abriendo pestañas. El prompt se enviará automáticamente.");
+            displayCommandMessage("Abriendo pestañas. El prompt se enviará automáticamente.", false);
         }
-
 
         // 4. Abrir las pestañas
         selectedChatbots.forEach(cb => {
             let finalUrl = cb.url;
             
             if (cb.auto) {
-                // Para los que envían automáticamente, codificamos y adjuntamos el prompt
+                // Adjuntar el prompt (codificado)
                 finalUrl += encodeURIComponent(prompt);
             }
             
-            // Abrir la URL en una nueva pestaña.
-            // Es crucial que esto se haga dentro de la función del manejador de eventos del botón
-            // para evitar que los navegadores bloqueen las ventanas emergentes.
+            // Abrir la URL en una nueva pestaña
             window.open(finalUrl, '_blank');
         });
     }
+
+    // Inicialización: Mostrar la pestaña Manual por defecto
+    document.addEventListener('DOMContentLoaded', () => {
+        showTab('manual');
+    });
 </script>
 
 </body>
