@@ -3,259 +3,712 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Multiprompt - Réplica con Generador</title>
+    <title>Multiprompt EDU</title>
     <style>
+        :root {
+            --bg-primary: #f8f9fa;
+            --bg-secondary: #ffffff;
+            --bg-tertiary: #f1f3f5;
+            --text-primary: #212529;
+            --text-secondary: #6c757d;
+            --border-color: #dee2e6;
+            --accent-primary: #667eea;
+            --accent-secondary: #764ba2;
+            --success: #28a745;
+            --success-hover: #218838;
+            --info: #17a2b8;
+            --warning: #ffc107;
+            --danger: #dc3545;
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+            --shadow-lg: 0 8px 24px rgba(0,0,0,0.15);
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #1a1a1a;
+            --bg-secondary: #2d2d2d;
+            --bg-tertiary: #252525;
+            --text-primary: #e9ecef;
+            --text-secondary: #adb5bd;
+            --border-color: #404040;
+            --accent-primary: #7c3aed;
+            --accent-secondary: #a855f7;
+            --success: #34d058;
+            --success-hover: #28a745;
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.3);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.4);
+            --shadow-lg: 0 8px 24px rgba(0,0,0,0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: sans-serif;
-            margin: 20px;
-            background-color: #f4f4f9;
-            color: #333;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            padding: 20px;
+            padding-bottom: 120px; /* Espacio para el footer fijo */
         }
+
         .container {
-            max-width: 900px;
+            max-width: 1000px;
             margin: 0 auto;
-            background: #fff;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            transition: background-color 0.3s ease;
         }
-        h1 {
-            color: #007bff;
+
+        .header {
+            background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+            padding: 40px 30px;
             text-align: center;
-            margin-bottom: 20px;
+            position: relative;
         }
-        
-        /* Controles de Pestañas */
+
+        .header h1 {
+            color: white;
+            font-size: 2.5em;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header p {
+            color: rgba(255,255,255,0.95);
+            font-size: 1.1em;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .theme-selector {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 8px;
+            background: rgba(255,255,255,0.15);
+            padding: 8px;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+        }
+
+        .theme-btn {
+            background: transparent;
+            border: 2px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+
+        .theme-btn:hover {
+            background: rgba(255,255,255,0.2);
+            border-color: rgba(255,255,255,0.5);
+        }
+
+        .theme-btn.active {
+            background: rgba(255,255,255,0.3);
+            border-color: white;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .instructions {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            border-left: 4px solid var(--accent-primary);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        .instructions h3 {
+            color: var(--accent-primary);
+            margin-bottom: 12px;
+            font-size: 1.2em;
+        }
+
+        .instructions ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .instructions li {
+            padding: 8px 0;
+            padding-left: 24px;
+            position: relative;
+        }
+
+        .instructions li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--accent-primary);
+            font-weight: bold;
+        }
+
+        .warning-box {
+            background: linear-gradient(135deg, rgba(255, 193, 7, 0.1) 0%, rgba(255, 152, 0, 0.1) 100%);
+            border: 2px solid var(--warning);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: start;
+            gap: 12px;
+        }
+
+        .warning-box::before {
+            content: "⚠️";
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .warning-box p {
+            margin: 0;
+            color: var(--text-primary);
+        }
+
         .tabs {
             display: flex;
-            margin-bottom: 20px;
+            gap: 10px;
+            margin-bottom: 25px;
+            border-bottom: 2px solid var(--border-color);
         }
+
         .tabs button {
-            flex-grow: 1;
-            padding: 10px;
-            border: 1px solid #ccc;
-            background-color: #eee;
+            flex: 1;
+            padding: 14px 20px;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
             cursor: pointer;
             font-size: 16px;
-            transition: background-color 0.2s, border-bottom 0.2s;
-            border-bottom: 3px solid transparent;
-        }
-        .tabs button.active {
-            background-color: #fff;
-            border-bottom: 3px solid #007bff;
-            font-weight: bold;
-        }
-        .tab-content {
-            padding: 10px 0;
+            font-weight: 600;
+            transition: all 0.3s;
+            position: relative;
+            border-radius: 8px 8px 0 0;
         }
 
-        /* Estilos del Generador (Formulario) */
-        .form-group {
-            margin-bottom: 15px;
+        .tabs button:hover {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
         }
+
+        .tabs button.active {
+            color: var(--accent-primary);
+            background: var(--bg-tertiary);
+        }
+
+        .tabs button.active::after {
+            content: "";
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            border-radius: 3px 3px 0 0;
+        }
+
+        .tab-content {
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
         .form-group label {
             display: block;
-            font-weight: bold;
-            margin-bottom: 5px;
-            color: #555;
-        }
-        .form-group input[type="text"] {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-        #generatedPromptArea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #4CAF50;
-            border-radius: 4px;
-            resize: vertical;
-            min-height: 150px;
-            font-size: 16px;
-            box-sizing: border-box;
-            background-color: #e6ffe6;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-primary);
         }
 
-        /* Estilos de Pestaña Principal */
-        #manualPromptArea {
-            width: 98%;
-            padding: 10px;
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+        .form-group input[type="text"] {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 15px;
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            transition: all 0.2s;
+        }
+
+        .form-group input[type="text"]:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        textarea {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
             resize: vertical;
             min-height: 150px;
-            font-size: 16px;
+            font-size: 15px;
+            font-family: inherit;
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            transition: all 0.2s;
         }
-        
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        #generatedPromptArea {
+            background: linear-gradient(135deg, rgba(40, 167, 69, 0.05) 0%, rgba(34, 197, 94, 0.05) 100%);
+            border-color: var(--success);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 30px 0 20px 0;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .section-header h2 {
+            color: var(--text-primary);
+            font-size: 1.5em;
+            font-weight: 600;
+        }
+
+        .control-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .control-btn {
+            padding: 8px 16px;
+            border: 2px solid var(--border-color);
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .control-btn:hover {
+            background: var(--accent-primary);
+            color: white;
+            border-color: var(--accent-primary);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .control-btn.random {
+            background: linear-gradient(135deg, var(--warning) 0%, #ff9800 100%);
+            color: white;
+            border: none;
+        }
+
+        .control-btn.random:hover {
+            transform: translateY(-1px) scale(1.05);
+            box-shadow: var(--shadow-md);
+        }
+
         .chatbot-section {
-            margin-bottom: 20px;
-            border-top: 2px solid #eee;
-            padding-top: 15px;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: var(--bg-tertiary);
+            border-radius: 12px;
+            transition: background-color 0.3s ease;
         }
+
         .chatbot-section h3 {
-            color: #555;
-            margin-top: 0;
+            color: var(--text-primary);
+            margin-bottom: 10px;
+            font-size: 1.2em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
+
+        .chatbot-section > p {
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+            font-size: 14px;
+        }
+
         .chatbot-list {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 10px;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 12px;
         }
+
         .chatbot-item {
             display: flex;
             align-items: center;
-        }
-        .chatbot-item label {
-            margin-left: 8px;
+            padding: 12px 16px;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
             cursor: pointer;
+            transition: all 0.2s;
         }
-        button#sendButton {
-            display: block;
+
+        .chatbot-item:hover {
+            border-color: var(--accent-primary);
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .chatbot-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 12px;
+            cursor: pointer;
+            accent-color: var(--accent-primary);
+        }
+
+        .chatbot-item label {
+            cursor: pointer;
+            user-select: none;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .btn-primary {
             width: 100%;
-            padding: 15px;
-            background-color: #28a745;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--success) 0%, #20c997 100%);
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 12px;
             font-size: 18px;
+            font-weight: 600;
             cursor: pointer;
-            transition: background-color 0.3s;
-            margin-top: 20px;
+            transition: all 0.3s;
+            box-shadow: var(--shadow-md);
+            margin-top: 30px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
-        button#sendButton:hover {
-            background-color: #218838;
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            background: linear-gradient(135deg, var(--success-hover) 0%, #1ba886 100%);
         }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            padding: 12px 24px;
+            background: var(--accent-primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 12px;
+        }
+
+        .btn-secondary:hover {
+            background: var(--accent-secondary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
         .message {
-            margin-top: 15px;
-            padding: 10px;
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-            border-radius: 4px;
+            margin-top: 20px;
+            padding: 16px 20px;
+            border-radius: 8px;
             text-align: center;
-            display: none; /* Oculto por defecto */
+            font-weight: 500;
+            animation: slideDown 0.3s ease;
+            display: none;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.success {
+            background: linear-gradient(135deg, rgba(40, 167, 69, 0.1) 0%, rgba(34, 197, 94, 0.1) 100%);
+            color: var(--success);
+            border: 2px solid var(--success);
+        }
+
+        .message.error {
+            background: linear-gradient(135deg, rgba(220, 53, 69, 0.1) 0%, rgba(239, 68, 68, 0.1) 100%);
+            color: var(--danger);
+            border: 2px solid var(--danger);
+        }
+
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: var(--bg-tertiary);
+            border-top: 1px solid var(--border-color);
+            padding: 15px 20px;
+            font-size: 0.9em;
+            text-align: center;
+            color: var(--text-secondary);
+            box-shadow: 0 -2px 8px rgba(0,0,0,0.05);
+        }
+
+        .footer a {
+            color: var(--accent-primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .footer p {
+            margin: 5px 0;
+        }
+
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .theme-selector {
+                position: static;
+                justify-content: center;
+                margin-top: 20px;
+            }
+
+            .tabs {
+                flex-direction: column;
+            }
+
+            .tabs button {
+                border-radius: 8px;
+            }
+
+            .tabs button.active::after {
+                display: none;
+            }
+
+            .chatbot-list {
+                grid-template-columns: 1fr;
+            }
+
+            .control-buttons {
+                flex-wrap: wrap;
+            }
+
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+            
+            body {
+                padding-bottom: 150px; /* Más espacio para el footer en móvil */
+            }
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>Multiprompt Educativo</h1>
-    <p>Envía el mismo prompt a múltiples chatbots simultáneamente. Permite las ventanas emergentes.</p>
-
-    <div class="tabs">
-        <button id="tabManual" onclick="showTab('manual')">Prompt Manual</button>
-        <button id="tabGenerator" onclick="showTab('generator')">Generador de Prompt Estructurado</button>
+    <div class="header">
+        <div class="theme-selector">
+            <button class="theme-btn" data-theme="light">☀️ Claro</button>
+            <button class="theme-btn" data-theme="dark">🌙 Oscuro</button>
+            <button class="theme-btn active" data-theme="system">💻 Sistema</button>
+        </div>
+        <h1>Multiprompt EDU</h1>
+        <p>Envía el mismo prompt a múltiples chatbots de IA simultáneamente y compara sus respuestas</p>
     </div>
 
-    <div id="manual" class="tab-content">
-        <h2>Pega tu prompt aquí:</h2>
-        <textarea id="manualPromptArea" placeholder="Escribe o pega aquí tu prompt personalizado."></textarea>
+    <div class="content">
+        <div class="instructions">
+            <h3>📋 ¿Cómo funciona?</h3>
+            <ul>
+                <li>Escribe un prompt manual o usa el **Generador** para crear un prompt estructurado.</li>
+                <li>Selecciona los chatbots de IA que quieras consultar.</li>
+                <li>Haz clic en "Enviar" y se abrirán pestañas automáticamente.</li>
+                <li>Compara las respuestas de diferentes IAs para obtener mejores resultados y estrategias docentes.</li>
+            </ul>
+        </div>
+
+        <div class="warning-box">
+            <div>
+                <p><strong>Importante:</strong> Algunos chatbots necesitan haber iniciado sesión para funcionar bien. Si abres varias pestañas a la vez, el navegador podría bloquearlas: busca el aviso en la barra de direcciones para darle permiso.</p>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <button id="tabManual" onclick="showTab('manual')">✍️ Prompt Manual</button>
+            <button id="tabGenerator" onclick="showTab('generator')">🎯 Generador de Prompt</button>
+        </div>
+
+        <div id="manual" class="tab-content">
+            <h2 style="margin-bottom: 15px;">Escribe tu prompt aquí:</h2>
+            <textarea id="manualPromptArea" placeholder="Escribe o pega aquí tu prompt personalizado. Ejemplo: 'Explica el teorema de Pitágoras de forma visual para estudiantes de 2º ESO'"></textarea>
+        </div>
+
+        <div id="generator" class="tab-content" style="display:none;">
+            <h2 style="margin-bottom: 20px;">Generador de Prompt Estructurado para IA Educativa</h2>
+            
+            <div class="form-group">
+                <label for="fNivel">📚 Nivel Educativo</label>
+                <input type="text" id="fNivel" placeholder="Ej: Secundaria, 1º ESO, Bachillerato, Formación Profesional">
+            </div>
+            
+            <div class="form-group">
+                <label for="fEspecialidad">🎓 Especialidad o Materia</label>
+                <input type="text" id="fEspecialidad" placeholder="Ej: Matemáticas, Historia, Lengua Castellana, Tecnología">
+            </div>
+
+            <div class="form-group">
+                <label for="fCosto">😓 Aspectos de tu trabajo que te cuestan o no te gustan</label>
+                <input type="text" id="fCosto" placeholder="Ej: Corrección de exámenes, burocracia, gestionar conflictos en el aula">
+            </div>
+
+            <div class="form-group">
+                <label for="fGusto">⭐ Aspectos de tu trabajo en los que destacas o que te gustan</label>
+                <input type="text" id="fGusto" placeholder="Ej: Tutoría, creación de materiales interactivos, motivar estudiantes">
+            </div>
+
+            <button class="btn-secondary" onclick="generatePrompt()">🚀 Generar Prompt</button>
+
+            <h2 style="margin-top: 30px; margin-bottom: 15px;">Prompt Generado (puedes editarlo):</h2>
+            <textarea id="generatedPromptArea"></textarea>
+            
+            <button class="btn-secondary" onclick="useGeneratedPrompt()">✅ Usar este Prompt</button>
+        </div>
+
+        <div class="section-header">
+            <h2>Selecciona los chatbots</h2>
+            <div class="control-buttons">
+                <button class="control-btn" onclick="selectAll()">
+                    ✓ Todos
+                </button>
+                <button class="control-btn" onclick="deselectAll()">
+                    ✗ Ninguno
+                </button>
+                <button class="control-btn random" onclick="selectRandom()">
+                    🎲 Aleatorio
+                </button>
+            </div>
+        </div>
+
+        <div class="chatbot-section">
+            <h3>✅ Chatbots con Apertura Automática</h3>
+            <p>Se abrirán las pestañas y el prompt se enviará automáticamente</p>
+            <div class="chatbot-list">
+                <div class="chatbot-item">
+                    <input type="checkbox" id="chatgpt" value="ChatGPT">
+                    <label for="chatgpt">ChatGPT</label>
+                </div>
+                <div class="chatbot-item">
+                    <input type="checkbox" id="grok" value="Grok">
+                    <label for="grok">Grok</label>
+                </div>
+                <div class="chatbot-item">
+                    <input type="checkbox" id="copilot" value="Microsoft Copilot">
+                    <label for="copilot">Microsoft Copilot</label>
+                </div>
+                <div class="chatbot-item">
+                    <input type="checkbox" id="perplexity" value="Perplexity">
+                    <label for="perplexity">Perplexity</label>
+                </div>
+                <div class="chatbot-item">
+                    <input type="checkbox" id="lechat" value="Le Chat (Mistral AI)">
+                    <label for="lechat">Le Chat (Mistral AI)</label>
+                </div>
+                <div class="chatbot-item">
+                    <input type="checkbox" id="claude" value="Claude">
+                    <label for="claude">Claude</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="chatbot-section">
+            <h3>📝 Chatbots con Pegado Manual</h3>
+            <p>Se abrirán las pestañas, pero necesitarás pegar manualmente el prompt (el texto se copiará al portapapeles)</p>
+            <div class="chatbot-list">
+                <div class="chatbot-item">
+                    <input type="checkbox" id="gemini" value="Gemini">
+                    <label for="gemini">Gemini</label>
+                </div>
+                <div class="chatbot-item">
+                    <input type="checkbox" id="kimi" value="Kimi">
+                    <label for="kimi">Kimi</label>
+                </div>
+                <div class="chatbot-item">
+                    <input type="checkbox" id="deepseek" value="DeepSeek">
+                    <label for="deepseek">DeepSeek</label>
+                </div>
+                <div class="chatbot-item">
+                    <input type="checkbox" id="qwen" value="Qwen">
+                    <label for="qwen">Qwen</label>
+                </div>
+                <div class="chatbot-item">
+                    <input type="checkbox" id="phind" value="Phind">
+                    <label for="phind">Phind</label>
+                </div>
+            </div>
+        </div>
+
+        <button id="sendButton" class="btn-primary" onclick="sendPrompts()">
+            🚀 Enviar a chatbots seleccionados
+        </button>
+
+        <div id="messageBox" class="message"></div>
     </div>
+</div>
 
-    <div id="generator" class="tab-content" style="display:none;">
-        <h2>Fórmulario para generar Prompt de IA Educativa:</h2>
-        
-        <div class="form-group">
-            <label for="fNivel">Nivel Educativo en el que trabajas (ej: Bachillerato, Primaria, Formación Profesional):</label>
-            <input type="text" id="fNivel" placeholder="Ej: Secundaria, 1º ESO">
-        </div>
-        
-        <div class="form-group">
-            <label for="fEspecialidad">Especialidad (ej: Matemáticas, Historia, Lengua Castellana):</label>
-            <input type="text" id="fEspecialidad" placeholder="Ej: Tecnología, Filosofía">
-        </div>
-
-        <div class="form-group">
-            <label for="fCosto">Aspectos de tu trabajo que te cuestan o no te gustan (ej: corrección de exámenes, planificación de reuniones):</label>
-            <input type="text" id="fCosto" placeholder="Ej: Burocracia, gestionar conflictos en el aula">
-        </div>
-
-        <div class="form-group">
-            <label for="fGusto">Aspectos de tu trabajo que te gustan o que destacas en ellas (ej: creatividad en el diseño de actividades, relación con los alumnos):</label>
-            <input type="text" id="fGusto" placeholder="Ej: Tutoría, creación de materiales interactivos">
-        </div>
-
-        <button onclick="generatePrompt()">Generar Prompt</button>
-
-        <h2 style="margin-top: 20px;">Prompt Generado (Edita si es necesario):</h2>
-        <textarea id="generatedPromptArea" readonly></textarea>
-        
-        <button onclick="useGeneratedPrompt()">Usar este Prompt</button>
-    </div>
-
-    <h2>Selecciona los chatbots:</h2>
-
-    <div class="chatbot-section">
-        <h3>Chatbots con Apertura Automática ✓</h3>
-        <p>Se abrirán las pestañas y el prompt se enviará automáticamente.</p>
-        <div class="chatbot-list">
-            <div class="chatbot-item">
-                <input type="checkbox" id="chatgpt" value="ChatGPT">
-                <label for="chatgpt">ChatGPT</label>
-            </div>
-            <div class="chatbot-item">
-                <input type="checkbox" id="grok" value="Grok">
-                <label for="grok">Grok</label>
-            </div>
-            <div class="chatbot-item">
-                <input type="checkbox" id="copilot" value="Microsoft Copilot">
-                <label for="copilot">Microsoft Copilot</label>
-            </div>
-            <div class="chatbot-item">
-                <input type="checkbox" id="perplexity" value="Perplexity">
-                <label for="perplexity">Perplexity</label>
-            </div>
-            <div class="chatbot-item">
-                <input type="checkbox" id="lechat" value="Le Chat (Mistral AI)">
-                <label for="lechat">Le Chat (Mistral AI)</label>
-            </div>
-             <div class="chatbot-item">
-                <input type="checkbox" id="claude" value="Claude">
-                <label for="claude">Claude</label>
-            </div>
-        </div>
-    </div>
-
-    <div class="chatbot-section">
-        <h3>Chatbots con Pegado Manual !</h3>
-        <p>Se abrirán las pestañas, pero necesitarás pegar manualmente el prompt (el texto se copiará al portapapeles).</p>
-        <div class="chatbot-list">
-            <div class="chatbot-item">
-                <input type="checkbox" id="gemini" value="Gemini">
-                <label for="gemini">Gemini</label>
-            </div>
-            <div class="chatbot-item">
-                <input type="checkbox" id="kimi" value="Kimi">
-                <label for="kimi">Kimi</label>
-            </div>
-            <div class="chatbot-item">
-                <input type="checkbox" id="deepseek" value="DeepSeek">
-                <label for="deepseek">DeepSeek</label>
-            </div>
-            <div class="chatbot-item">
-                <input type="checkbox" id="qwen" value="Qwen">
-                <label for="qwen">Qwen</label>
-            </div>
-            <div class="chatbot-item">
-                <input type="checkbox" id="phind" value="Phind">
-                <label for="phind">Phind</label>
-            </div>
-        </div>
-    </div>
-
-    <button id="sendButton" onclick="sendPrompts()">Enviar a chatbots seleccionados</button>
-
-    <div id="messageBox" class="message"></div>
+<div class="footer">
+    <p>Herramienta original: <a href="https://bilateria.org/app/utils_IA/multiprompt.html" target="_blank">Multiprompt de Juan José de Haro</a>.</p>
+    <p>Adaptación (Multiprompt EDU) por <a href="http://www.jlmirall.es" target="_blank">José Luis Miralles Bono (www.jlmirall.es)</a>.</p>
+    <p>Esta obra está bajo una licencia <a href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative Commons BY-SA 4.0</a>.</p>
 </div>
 
 <script>
-    // Objeto con la configuración original (sin el fix de Google) y los nuevos chatbots
+    // Configuración de chatbots
     const chatbots = {
-        // Chatbots con envío automático (el prompt va en la URL)
         "chatgpt": { 
             url: "https://chat.openai.com/?q=", 
             auto: true 
@@ -280,8 +733,6 @@
             url: "https://claude.ai/chat?prompt=", 
             auto: true 
         },
-
-        // Chatbots con pegado manual (solo abre la web)
         "gemini": { 
             url: "https://gemini.google.com/app", 
             auto: false 
@@ -304,29 +755,60 @@
         }
     };
 
-    let currentPromptSource = 'manual'; // 'manual' o 'generated'
+    let currentPromptSource = 'manual';
 
-    // --- Funciones de Interfaz (Pestañas y Mensajes) ---
+    // --- SISTEMA DE TEMAS ---
+    function initTheme() {
+        const savedTheme = localStorage.getItem('theme') || 'system';
+        applyTheme(savedTheme);
+        updateThemeButtons(savedTheme);
+    }
 
+    function applyTheme(theme) {
+        if (theme === 'system') {
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+        } else {
+            document.documentElement.setAttribute('data-theme', theme);
+        }
+        localStorage.setItem('theme', theme);
+    }
+
+    function updateThemeButtons(activeTheme) {
+        document.querySelectorAll('.theme-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.theme === activeTheme);
+        });
+    }
+
+    document.querySelectorAll('.theme-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const theme = btn.dataset.theme;
+            applyTheme(theme);
+            updateThemeButtons(theme);
+        });
+    });
+
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+        if (localStorage.getItem('theme') === 'system') {
+            applyTheme('system');
+        }
+    });
+
+    // --- FUNCIONES DE INTERFAZ ---
     function showTab(tabId) {
-        // Ocultar todos los contenidos y desactivar botones
         document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
         document.querySelectorAll('.tabs button').forEach(el => el.classList.remove('active'));
 
-        // Mostrar el contenido y activar el botón
         document.getElementById(tabId).style.display = 'block';
         document.getElementById('tab' + (tabId === 'manual' ? 'Manual' : 'Generator')).classList.add('active');
         
-        // Actualizar el origen del prompt
         currentPromptSource = tabId === 'manual' ? 'manual' : 'generated';
     }
 
     function displayMessage(text, isError = false) {
         const msgBox = document.getElementById('messageBox');
         msgBox.textContent = text;
-        msgBox.style.backgroundColor = isError ? '#f8d7da' : '#d4edda';
-        msgBox.style.color = isError ? '#721c24' : '#155724';
-        msgBox.style.borderColor = isError ? '#f5c6cb' : '#c3e6cb';
+        msgBox.className = 'message ' + (isError ? 'error' : 'success');
         msgBox.style.display = 'block';
         
         setTimeout(() => {
@@ -334,8 +816,40 @@
         }, 5000);
     }
 
-    // --- Funciones de Lógica (Generador y Envío) ---
+    // --- FUNCIONES DE SELECCIÓN DE CHATBOTS ---
+    function selectAll() {
+        Object.keys(chatbots).forEach(id => {
+            document.getElementById(id).checked = true;
+        });
+        displayMessage('✅ Todos los chatbots seleccionados');
+    }
 
+    function deselectAll() {
+        Object.keys(chatbots).forEach(id => {
+            document.getElementById(id).checked = false;
+        });
+        displayMessage('Todos los chatbots deseleccionados');
+    }
+
+    function selectRandom() {
+        const chatbotIds = Object.keys(chatbots);
+        const numToSelect = Math.floor(Math.random() * chatbotIds.length) + 1;
+        
+        deselectAll();
+        
+        const shuffled = chatbotIds.sort(() => 0.5 - Math.random());
+        const selected = shuffled.slice(0, numToSelect);
+        
+        selected.forEach(id => {
+            document.getElementById(id).checked = true;
+        });
+        
+        const names = selected.map(id => document.querySelector(`label[for="${id}"]`).textContent).join(', ');
+        
+        displayMessage(`🎲 Seleccionados aleatoriamente: ${names}`);
+    }
+
+    // --- FUNCIONES DE GENERADOR (PROMPT AVANZADO) ---
     function generatePrompt() {
         const nivel = document.getElementById('fNivel').value.trim();
         const especialidad = document.getElementById('fEspecialidad').value.trim();
@@ -343,31 +857,48 @@
         const gusto = document.getElementById('fGusto').value.trim();
 
         if (!nivel || !especialidad || !costo || !gusto) {
-            displayMessage("Por favor, rellena todos los campos del formulario para generar el prompt.", true);
+            displayMessage("⚠️ Por favor, rellena todos los campos del formulario para generar el prompt.", true);
             return;
         }
 
+        // Estructura del Prompt Mejorada (ROLE, TASK, CONTEXT...)
         const promptTemplate = `
-Eres un experto en el uso de la Inteligencia Artificial aplicado a la educación. Trabajo en la especialidad de ${especialidad} y mi público son estudiantes de ${nivel}.
+[INSTRUCCIÓN AL CHATBOT: Actúa como un consultor de IA para docentes]
 
-1.  **Usos de la IA:** En primer lugar, necesito una lista exhaustiva y creativa (sin entrar en detalles) de los diferentes usos que la IA puede ofrecer para la enseñanza en ${especialidad} para estudiantes de ${nivel}.
+#### 1. ROL (Identidad y Experiencia)
+Actúa como un **Experto en Integración Curricular de Inteligencia Artificial (IA)** y un **Especialista en Productividad Docente**. Tu objetivo es proporcionar estrategias accionables y creativas para un profesor de la especialidad de **${especialidad}** que trabaja con alumnos de **${nivel}**.
 
-2.  **Productividad y Bienestar:** A continuación, quiero que profundices en cómo la IA puede ayudarme específicamente a mejorar o aliviar aquellos aspectos de mi trabajo que me cuestan, como ${costo}. Además, quiero que me indiques cómo puede potenciar mis puntos fuertes, como ${gusto}.
+#### 2. TAREA (Los Objetivos Principales)
+Tu respuesta debe estar dividida en tres secciones claras y separadas, abordando los siguientes puntos:
 
-Quiero que las respuestas sean claras, prácticas y que se centren en soluciones concretas para mi día a día.
-        `.trim();
+A. **Innovación en el Aula:** Crea una **lista exhaustiva y altamente creativa** (con al menos 15 puntos, sin entrar en descripciones, solo ideas) de cómo la IA puede ser utilizada directamente en la asignatura de **${especialidad}** para el nivel de **${nivel}** para mejorar la enseñanza y el aprendizaje (ej. proyectos, evaluaciones, diferenciación).
+
+B. **Alivio de Carga:** Detalla **tres estrategias concretas** y prácticas de IA que aborden los aspectos del trabajo docente que el profesor encuentra difíciles o que le cuestan, específicamente **${costo}**. Explica exactamente cómo la IA puede aliviar esa carga (ej. herramientas o procesos específicos).
+
+C. **Potenciación de Fortalezas:** Detalla **tres estrategias concretas** de IA que permitan al profesor potenciar y maximizar sus fortalezas o aspectos que disfruta, que son **${gusto}**. Describe cómo la IA actúa como un amplificador de su talento.
+
+#### 3. CONTEXTO Y RESTRICCIONES
+* **Precisión:** Todas las sugerencias deben ser relevantes, prácticas y aplicables al contexto educativo de **${nivel}** y **${especialidad}**.
+* **Originalidad:** Prioriza ideas que vayan más allá de la simple "creación de cuestionarios".
+* **Longitud:** Las secciones B y C deben tener cada una un desarrollo de un párrafo por estrategia (3 párrafos en total por sección).
+
+#### 4. TONO
+El tono debe ser **profesional, inspirador y altamente práctico**.
+
+#### 5. FORMATO
+Formatea tu respuesta usando **encabezados de Markdown** (ej. \`##\`) para cada una de las tres secciones (A, B y C) y **listas numeradas o de viñetas** según corresponda.`.trim();
         
         document.getElementById('generatedPromptArea').value = promptTemplate;
-        displayMessage("¡Prompt generado con éxito! Puedes revisarlo y editarlo si es necesario.");
+        displayMessage("✅ ¡Prompt generado con éxito! Puedes revisarlo y editarlo si es necesario.");
     }
     
     function useGeneratedPrompt() {
-        // Simplemente cambia el foco al área de texto generada
         currentPromptSource = 'generated';
         document.getElementById('generatedPromptArea').focus();
-        displayMessage("El prompt de envío será el que está en el área de 'Prompt Generado'.");
+        displayMessage("✅ El prompt de envío será el que está en el área de 'Prompt Generado'.");
     }
 
+    // --- FUNCIONES DE ENVÍO ---
     async function copyToClipboard(text) {
         try {
             await navigator.clipboard.writeText(text);
@@ -381,7 +912,6 @@ Quiero que las respuestas sean claras, prácticas y que se centren en soluciones
     async function sendPrompts() {
         let prompt;
         
-        // Determinar qué prompt usar (manual o generado/editado)
         if (currentPromptSource === 'manual') {
             prompt = document.getElementById('manualPromptArea').value.trim();
         } else {
@@ -390,13 +920,11 @@ Quiero que las respuestas sean claras, prácticas y que se centren en soluciones
 
         const selectedChatbots = [];
         
-        // 1. Validar el prompt
         if (!prompt) {
-            displayMessage("Por favor, introduce o genera un prompt.", true);
+            displayMessage("⚠️ Por favor, introduce o genera un prompt.", true);
             return;
         }
 
-        // 2. Recoger los chatbots seleccionados
         for (const [id, data] of Object.entries(chatbots)) {
             if (document.getElementById(id).checked) {
                 selectedChatbots.push({ id, ...data });
@@ -404,41 +932,38 @@ Quiero que las respuestas sean claras, prácticas y que se centren en soluciones
         }
         
         if (selectedChatbots.length === 0) {
-            displayMessage("Por favor, selecciona al menos un chatbot.", true);
+            displayMessage("⚠️ Por favor, selecciona al menos un chatbot.", true);
             return;
         }
 
-        // 3. Copiar el prompt si hay chatbots de pegado manual
         const needsManualPaste = selectedChatbots.some(cb => !cb.auto);
         let copySuccess = true;
         
         if (needsManualPaste) {
             copySuccess = await copyToClipboard(prompt);
             if (copySuccess) {
-                displayMessage("¡Prompt copiado al portapapeles! Abriendo pestañas...");
+                displayMessage("✅ ¡Prompt copiado al portapapeles! Abriendo pestañas...");
             } else {
-                displayMessage("Error: No se pudo copiar el prompt. Abriendo pestañas...", true);
+                displayMessage("⚠️ Error: No se pudo copiar el prompt. Abriendo pestañas...", true);
             }
         } else {
-            displayCommandMessage("Abriendo pestañas. El prompt se enviará automáticamente.", false);
+            displayMessage("🚀 Abriendo pestañas. El prompt se enviará automáticamente.");
         }
 
-        // 4. Abrir las pestañas
         selectedChatbots.forEach(cb => {
             let finalUrl = cb.url;
             
             if (cb.auto) {
-                // Adjuntar el prompt (codificado)
                 finalUrl += encodeURIComponent(prompt);
             }
             
-            // Abrir la URL en una nueva pestaña
             window.open(finalUrl, '_blank');
         });
     }
 
-    // Inicialización: Mostrar la pestaña Manual por defecto
+    // --- INICIALIZACIÓN ---
     document.addEventListener('DOMContentLoaded', () => {
+        initTheme();
         showTab('manual');
     });
 </script>
