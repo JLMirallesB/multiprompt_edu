@@ -1072,19 +1072,63 @@
 
     // --- CÓDIGO JS RESTANTE Y CORREGIDO ---
 
-    const chatbots = {
-        "chatgpt": { url: "https://chat.openai.com/?q=", auto: true },
-        "grok": { url: "https://grok.x.com/chat?q=", auto: true },
-        "copilot": { url: "https://copilot.microsoft.com/?q=", auto: true },
-        "perplexity": { url: "https://www.perplexity.ai/search?q=", auto: true },
-        "lechat": { url: "https://chat.mistral.ai/chat?prompt=", auto: true },
-        "claude": { url: "https://claude.ai/chat?prompt=", auto: true },
-        "gemini": { url: "https://gemini.google.com/app", auto: false },
-        "kimi": { url: "https://kimi.ai/", auto: false },
-        "deepseek": { url: "https://www.deepseek.com/chat", auto: false },
-        "qwen": { url: "https://qianwen.tongyi.com/chat", auto: false },
-        "phind": { url: "https://www.phind.com/search", auto: false }
-    };
+const chatbots = {
+  chatgpt: {
+    // ChatGPT acepta ?q y envía la consulta automáticamente.
+    url: "https://chat.openai.com/?q=",
+    auto: true,
+  },
+  grok: {
+    // Grok no soporta ?q; sólo abre la página.
+    url: "https://grok.com",
+    auto: false,
+  },
+  copilot: {
+    // Bing Copilot usa parámetros para abrir chat y enviar directamente.
+    url: "https://www.bing.com/search?showconv=1&sendquery=1&q=",
+    auto: true,
+  },
+  perplexity: {
+    // Perplexity inicia búsqueda automáticamente con ?q.
+    url: "https://www.perplexity.ai/search?q=",
+    auto: true,
+  },
+  lechat: {
+    // Mistral Le Chat usa ?q pero no autoenvía (solo pre-rellena).
+    url: "https://chat.mistral.ai/chat?q=",
+    auto: false,
+  },
+  claude: {
+    // Claude permite pre-rellenar con /new?q= pero no autoenvía.
+    url: "https://claude.ai/new?q=",
+    auto: false,
+  },
+  gemini: {
+    // Gemini no soporta parámetros por URL.
+    url: "https://gemini.google.com/app",
+    auto: false,
+  },
+  kimi: {
+    // No hay soporte documentado para ?q.
+    url: "https://kimi.ai/",
+    auto: false,
+  },
+  deepseek: {
+    // No admite búsqueda por URL.
+    url: "https://www.deepseek.com/chat",
+    auto: false,
+  },
+  qwen: {
+    // Página oficial de Qwen (Tongyi Qianwen).
+    url: "https://chat.qwen.ai/",
+    auto: false,
+  },
+  phind: {
+    // Phind admite ?q y ejecuta la búsqueda automáticamente.
+    url: "https://www.phind.com/search?q=",
+    auto: true,
+  },
+};
 
     let currentPromptSource = 'manual';
     let currentLang = 'es';
